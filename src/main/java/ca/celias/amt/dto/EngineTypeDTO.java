@@ -26,6 +26,10 @@ public final class EngineTypeDTO {
         this(null, null);
     }
     
+    private EngineTypeDTO(EngineTypeDTOBuilder builder) {
+        this(builder.code, builder.description);
+    }
+    
     public EngineTypeDTO(String code, String description) {
         this.code = code;
         this.description = description;
@@ -65,5 +69,47 @@ public final class EngineTypeDTO {
         throw new CloneNotSupportedException();
     }
     
+    /**
+     * 
+     * @return
+     */
+    public EngineTypeDTOBuilder builder() {
+        return new EngineTypeDTOBuilder(this);
+    }
     
+    /**
+     * 
+     * @return
+     */
+    public static EngineTypeDTOBuilder emptyBuilder() {
+        return new EngineTypeDTOBuilder();
+    }
+    
+    
+    public static class EngineTypeDTOBuilder {
+        private String code;
+        private String description;
+       
+        private EngineTypeDTOBuilder() {
+        }
+        
+        private EngineTypeDTOBuilder(EngineTypeDTO dto) {
+            code = dto.code;
+            description = dto.description;
+        }
+
+        public EngineTypeDTOBuilder withCode(String code) {
+            this.code = code;
+            return this;
+        }
+
+        public EngineTypeDTOBuilder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public EngineTypeDTO build() {
+            return new EngineTypeDTO(this);
+        }
+    }
 }

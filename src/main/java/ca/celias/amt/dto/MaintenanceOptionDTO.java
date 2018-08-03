@@ -18,6 +18,10 @@ public class MaintenanceOptionDTO {
         this(null, null);
     }
     
+    private MaintenanceOptionDTO(MaintenanceOptionDTOBuilder builder) {
+        this(builder.code, builder.description);
+    }
+    
     public MaintenanceOptionDTO(String code, String description) {
         this.code = code;
         this.description = description;
@@ -51,4 +55,49 @@ public class MaintenanceOptionDTO {
         var other = (MaintenanceOptionDTO)obj;        
         return Objects.equals(code, other.code);
     }
+    
+    /**
+     * 
+     * @return
+     */
+    public MaintenanceOptionDTOBuilder builder() {
+        return new MaintenanceOptionDTOBuilder(this);
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public static MaintenanceOptionDTOBuilder emptyBuilder() {
+        return new MaintenanceOptionDTOBuilder();
+    }
+    
+    
+    public static class MaintenanceOptionDTOBuilder {
+        private String code;
+        private String description;
+       
+        private MaintenanceOptionDTOBuilder() {
+        }
+        
+        private MaintenanceOptionDTOBuilder(MaintenanceOptionDTO dto) {
+            code = dto.code;
+            description = dto.description;
+        }
+
+        public MaintenanceOptionDTOBuilder withCode(String code) {
+            this.code = code;
+            return this;
+        }
+
+        public MaintenanceOptionDTOBuilder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public MaintenanceOptionDTO build() {
+            return new MaintenanceOptionDTO(this);
+        }
+    }
+    
 }
