@@ -11,14 +11,16 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 
 import ca.celias.amt.dto.PatchItem;
-import ca.celias.amt.mvc.ResultNotFoundException;
+import ca.celias.amt.resources.HasLogger;
+import ca.celias.amt.services.ResultNotFoundException;
 import ca.celias.amt.services.entity.AmtEntity;
 
 /**
  * 
  * @author Chris Elias
  */
-public abstract class BaseDAO<DTO, ENTITY extends AmtEntity<IDTYPE>, IDTYPE> {
+public abstract class BaseDAO<DTO, ENTITY extends AmtEntity<IDTYPE>, IDTYPE> 
+implements HasLogger {
 
     private final Class<DTO> dtoType;
     private final Class<ENTITY> entityType;
@@ -104,7 +106,11 @@ public abstract class BaseDAO<DTO, ENTITY extends AmtEntity<IDTYPE>, IDTYPE> {
      * @throws ResultNotFoundException
      */
     public void remove(EntityManager entityManager, IDTYPE id) {
+        logger().trace("ENTER remove(entityManager, {})", id);
+        
         var entity = find(entityManager,id).orElseThrow(() -> new ResultNotFoundException());
         entityManager.remove(entity);
+        
+        logger().trace("EXIT remove(entityManager, {})", id);
     }    
 }

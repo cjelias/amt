@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 
 import ca.celias.amt.dto.MaintenanceOptionDTO;
 import ca.celias.amt.dto.PatchItem;
-import ca.celias.amt.mvc.ResultNotFoundException;
+import ca.celias.amt.services.ResultNotFoundException;
 import ca.celias.amt.services.entity.MaintenanceOption;
 
 /**

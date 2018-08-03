@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ca.celias.amt.mvc;
+package ca.celias.amt.services;
 
 /**
  * 

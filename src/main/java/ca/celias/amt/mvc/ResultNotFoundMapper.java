@@ -6,6 +6,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import ca.celias.amt.dto.ErrorMessage;
+import ca.celias.amt.services.ResultNotFoundException;
 
 /**
  * 

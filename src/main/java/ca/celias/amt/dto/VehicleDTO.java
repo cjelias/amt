@@ -4,6 +4,7 @@
 package ca.celias.amt.dto;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -19,11 +20,11 @@ public class VehicleDTO {
     private final int year;
     private final String make;
     private final String model;
-    private final double odometerReading;
+    private final Double odometerReading;
     private final String engineType;
     
     public VehicleDTO() {
-        this(null, null, 0, null, null, 0, null);
+        this(null, null, 0, null, null, null, null);
     }
 
     private VehicleDTO(VehicleDTOBuilder builder) {
@@ -32,9 +33,9 @@ public class VehicleDTO {
              builder.engineType);
     }
 
-    public VehicleDTO(String oid, String vin, int year, String make, String model, 
-            double odometerReadering, String engineType) {
-        this.oid = oid;
+    public VehicleDTO(UUID oid, String vin, int year, String make, String model, 
+            Double odometerReadering, String engineType) {
+        this.oid = oid == null ? null : oid.toString();
         this.vin = vin;
         this.year = year;
         this.make = make;
@@ -130,19 +131,19 @@ public class VehicleDTO {
     }
     
     public static class VehicleDTOBuilder {
-        private String oid;
+        private UUID oid;
         private String vin;
         private int year;
         private String make;
         private String model;
-        private double odometerReading;
+        private Double odometerReading;
         private String engineType;
        
         private VehicleDTOBuilder() {
         }
         
         private VehicleDTOBuilder(VehicleDTO dto) {
-            oid = dto.oid;
+            oid = dto.oid == null ? null : UUID.fromString(dto.oid);
             vin = dto.vin;
             year = dto.year;
             make = dto.make;
@@ -151,8 +152,13 @@ public class VehicleDTO {
             engineType = dto.engineType;
         }
 
-        public VehicleDTOBuilder withOid(String oid) {
+        public VehicleDTOBuilder withOid(UUID oid) {
             this.oid = oid;
+            return this;
+        }
+
+        public VehicleDTOBuilder withOid(String oid) {
+            this.oid = UUID.fromString(oid);
             return this;
         }
 
@@ -176,7 +182,7 @@ public class VehicleDTO {
             return this;
         }
         
-        public VehicleDTOBuilder withOdometerReading(int odometerReading) {
+        public VehicleDTOBuilder withOdometerReading(Double odometerReading) {
             this.odometerReading = odometerReading;
             return this;
         }

@@ -20,10 +20,10 @@ import ca.celias.amt.dto.EngineTypeDTO;
 import ca.celias.amt.dto.PatchItem;
 import ca.celias.amt.dto.ResponseEntity;
 import ca.celias.amt.dto.ResultDTO;
-import ca.celias.amt.mvc.ResultNotFoundException;
 import ca.celias.amt.resources.HasLogger;
 import ca.celias.amt.resources.JsonPatch;
 import ca.celias.amt.services.EngineTypeService;
+import ca.celias.amt.services.ResultNotFoundException;
 
 /**
  * 

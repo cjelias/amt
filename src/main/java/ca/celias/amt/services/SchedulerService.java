@@ -5,7 +5,6 @@ import javax.inject.Inject;
 
 import ca.celias.amt.dto.MaintenanceOptionDTO;
 import ca.celias.amt.dto.PatchItem;
-import ca.celias.amt.mvc.ResultNotFoundException;
 import ca.celias.amt.services.dao.SchedulerDAO;
 
 /**
