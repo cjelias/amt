@@ -30,9 +30,9 @@
 
         <version.derby>10.14.2.0</version.derby>
         <version.validator>6.0.11.Final</version.validator>
-        <version.bytebuddy>1.8.14</version.bytebuddy>
+        <version.bytebuddy>1.8.15</version.bytebuddy>
         <version.javassist>3.23.1-GA</version.javassist>
-        <version.hibernate>5.3.3.Final</version.hibernate>
+        <version.hibernate>5.3.4.Final</version.hibernate>
 
         <version.slf4j>1.7.25</version.slf4j>
         <version.logback>1.2.3</version.logback>
