@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="max.retention.days" value="60" />
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %-5level [%thread] %logger{0}: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/amt.log</file>
+        <append>true</append>
+        <encoder>
+            <charset>utf-8</charset>
+            <pattern>%d{HH:mm:ss.SSS} %-5level {%thread} [%logger{40}] : %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./logs/archive/amt-%d{yyyyMMdd}-%i.log.gz
+            </fileNamePattern>
+            <maxHistory>${max.retention.days}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="ca.celias" level="TRACE" additivity="false">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <root level="WARN">
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>
