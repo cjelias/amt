@@ -36,7 +36,6 @@
           Update was successful
         </div>
         <div class="alert alert-danger" id="alertError" role="alert" style="display: none;">
-          Update Failed.
         </div>
                 
         <form id="engineTypeForm" >
@@ -61,10 +60,9 @@
       <div class="card-header">Repair Options</div>
       <div class="card-body">
         <div class="alert alert-success" id="alertSuccessOption" role="alert" style="display: none;">
-          Update was successful
+          Completed
         </div>
         <div class="alert alert-danger" id="alertErrorOption" role="alert" style="display: none;">
-          Update Failed.
         </div>
                 
         <form id="optionform" >
@@ -131,7 +129,7 @@ function deleteEntity() {
   $.ajax({
     url: 'app/api/settings/enginetype/' + $("#code").val(),
     type: "DELETE",
-    success : function(response, textStatus, jqXhr) {
+    success : function(data) {
         table.ajax.reload();
         $("#alertSuccess").show().delay(2000).fadeOut();
       },
@@ -149,7 +147,7 @@ function create() {
     type: "PUT",
     data: data,
     contentType: "application/json",
-    success : function(response, textStatus, jqXhr) {
+    success : function(data) {
         table.ajax.reload(function (json) {
           var newCode = '#' + $("#createCode").val();
           table.row(newCode).select();
@@ -160,7 +158,7 @@ function create() {
 
         $("#alertSuccess").show().delay(2000).fadeOut();
       },
-      error : function(jqXHR, textStatus, errorThrown) {
+      error : function(data) {
         $('#alertError').show();
       }          
   });
@@ -182,7 +180,7 @@ function patch() {
     data : patchData,
     contentType : "application/json",
     type : 'PATCH',
-    success : function(response, textStatus, jqXhr) {
+    success : function(data) {
       table.ajax.reload(null, false);
       map = new Object();
       table.row($("#code").val()).select();
@@ -195,26 +193,58 @@ function patch() {
 }
 
 $(document).ready(function() {
+  $(".form-check-input").attr("disabled", true);
+  $(".form-check-input").change(function() {
+    $.ajax({
+        url : 'app/api/settings/enginetype/' + $("#code").val() + '/maintenanceoptions/' + this.id,
+        type : (this.checked) ? "PUT" : "DELETE",
+        success : function(data) {
+          $("#alertSuccessOption").show().delay(1000).fadeOut();
+        },
+        error : function(data) {
+          $('#alertErrorOption').show();
+        }          
+      });
+  });
+  
   table.on( 'select', function ( e, dt, type, indexes ) {
     var rowData = table.rows( indexes ).data().toArray();
     
+    // get data for form
     $.ajax({
       type: "GET",
       url: "app/api/settings/enginetype/" + rowData[0].code,
       dataType: "json",
       headers : {  "Content-Type" : "application/json" },
       success: function(data) {
+        $('.form-check-input').prop('checked', false);
+        $(".form-check-input").attr("disabled", false);
         $("#code").val(data["code"]);
         $("#description").val(data["description"]);
         bindField('description');
         $('#butDelete').disable(false);
         $('#butSubmit').disable(true);
       },
-    });        
+    });
+
+    // get options for engine type
+    $.ajax({
+        type: "GET",
+        url: "app/api/settings/enginetype/" + rowData[0].code + "/maintenanceoptions",
+        dataType: "json",
+        headers : {  "Content-Type" : "application/json" },
+        success: function(data) {
+        	for (var i = 0; i < data.length; i++) {
+        		$("#" + data[i].code).prop('checked', true);
+        	}
+        },
+      });
   })
   .on( 'deselect', function ( e, dt, type, indexes ) {
       $('#code').val("");
       $("#description").val("");
+      $('.form-check-input').prop('checked', false);
+      $(".form-check-input").attr("disabled", true);
       unbindField('description');
       selectedRow = null;
       $('#butSubmit').disable(true);
