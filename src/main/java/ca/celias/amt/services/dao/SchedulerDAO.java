@@ -40,7 +40,7 @@ public class SchedulerDAO extends BaseDAO<MaintenanceOptionDTO,MaintenanceOption
 
     @Override
     public void update(EntityManager entityManager, String code, PatchItem ... patchItems) {
-        var entity = find(entityManager, code).orElseThrow(() -> new ResultNotFoundException());
+        var entity = find(entityManager, code).orElseThrow(() -> new ResultNotFoundException(""));
         
         for (var patchItem : patchItems) {
             var fieldName = patchItem.getPath();

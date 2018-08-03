@@ -108,7 +108,7 @@ implements HasLogger {
     public void remove(EntityManager entityManager, IDTYPE id) {
         logger().trace("ENTER remove(entityManager, {})", id);
         
-        var entity = find(entityManager,id).orElseThrow(() -> new ResultNotFoundException());
+        var entity = find(entityManager,id).orElseThrow(() -> new ResultNotFoundException(id.toString()));
         entityManager.remove(entity);
         
         logger().trace("EXIT remove(entityManager, {})", id);

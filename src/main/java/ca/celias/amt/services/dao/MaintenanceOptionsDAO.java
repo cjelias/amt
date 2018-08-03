@@ -43,7 +43,7 @@ public class MaintenanceOptionsDAO extends BaseDAO<MaintenanceOptionDTO,Maintena
 
     @Override
     public void update(EntityManager entityManager, String code, PatchItem ... patchItems) {
-        var entity = find(entityManager, code).orElseThrow(() -> new ResultNotFoundException());
+        var entity = find(entityManager, code).orElseThrow(() -> new ResultNotFoundException("MaintenanceOption: " + code));
         
         for (var patchItem : patchItems) {
             var fieldName = patchItem.getPath();

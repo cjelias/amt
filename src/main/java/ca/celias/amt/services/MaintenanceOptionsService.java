@@ -47,7 +47,7 @@ public class MaintenanceOptionsService extends BaseService {
     public MaintenanceOptionDTO findDTO(String code)
     throws ResultNotFoundException {
         return nonTransaction(entityManager -> dao.findDTO(entityManager, code))
-                .orElseThrow(() -> new ResultNotFoundException());
+                .orElseThrow(() -> new ResultNotFoundException("MaintenanceOption:" + code));
     }
     
     /**

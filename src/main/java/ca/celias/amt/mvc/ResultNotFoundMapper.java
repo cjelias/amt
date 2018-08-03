@@ -19,7 +19,7 @@ implements ExceptionMapper<ResultNotFoundException> {
     @Override
     public Response toResponse(ResultNotFoundException exception) {
         return Response.status(Status.NOT_FOUND)
-                .entity(new ErrorMessage(Status.NOT_FOUND.getStatusCode(), exception.getMessage())).build();
+                .entity(new ErrorMessage(Status.NOT_FOUND.getStatusCode(), "Not Found: " + exception.getMessage())).build();
     }
 
 }

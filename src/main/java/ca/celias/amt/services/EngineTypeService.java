@@ -52,7 +52,7 @@ public class EngineTypeService extends BaseService {
     public EngineTypeDTO findDTO(String code)
     throws ResultNotFoundException {
         return nonTransaction(entityManager -> dao.findDTO(entityManager, code))
-                .orElseThrow(() -> new ResultNotFoundException());
+                .orElseThrow(() -> new ResultNotFoundException("EngineType: " + code));
     }
     
     /**
@@ -81,7 +81,7 @@ public class EngineTypeService extends BaseService {
 
         return nonTransaction(entityManager -> {  
             var engineType = dao.find(entityManager, code)
-                    .orElseThrow(() -> new ResultNotFoundException());
+                    .orElseThrow(() -> new ResultNotFoundException("MaintenanceOption: " + code));
             
             var results = moDao.findByEngineType(entityManager, engineType);
             var size = results.size();
@@ -98,7 +98,7 @@ public class EngineTypeService extends BaseService {
     public void addOption(String code, String option) {
         transactionNoResult(entityManager -> {
             var engineType = dao.find(entityManager, code)
-                    .orElseThrow(() -> new ResultNotFoundException());
+                    .orElseThrow(() -> new ResultNotFoundException("Engine Type: " + code));
             
             var newOption = moDao.find(entityManager, option)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid option ->" + option ));
@@ -115,7 +115,7 @@ public class EngineTypeService extends BaseService {
     public void removeOption(String code, String option) {
         transactionNoResult(entityManager -> {
             var engineType = dao.find(entityManager, code)
-                    .orElseThrow(() -> new ResultNotFoundException());
+                    .orElseThrow(() -> new ResultNotFoundException("EngineType: " + code));
             
             var removeOption = moDao.find(entityManager, option)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid option ->" + option ));

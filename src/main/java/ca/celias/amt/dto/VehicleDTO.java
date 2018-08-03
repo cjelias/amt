@@ -83,7 +83,7 @@ public class VehicleDTO {
     /**
      * @return the odometerReading
      */
-    public double getOdometerReading() {
+    public Double getOdometerReading() {
         return odometerReading;
     }
 

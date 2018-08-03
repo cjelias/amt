@@ -19,7 +19,7 @@ implements ExceptionMapper<VINExistsException> {
     @Override
     public Response toResponse(VINExistsException exception) {
         return Response.status(Status.BAD_REQUEST)
-                .entity(new ErrorMessage(Status.BAD_REQUEST.getStatusCode(), exception.getMessage())).build();
+                .entity(new ErrorMessage(Status.BAD_REQUEST.getStatusCode(),"VIN Exists:" + exception.getMessage())).build();
     }
 
 }

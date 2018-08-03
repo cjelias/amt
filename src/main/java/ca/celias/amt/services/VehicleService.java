@@ -49,7 +49,7 @@ public class VehicleService extends BaseService {
     public VehicleDTO findDTO(UUID id)
     throws ResultNotFoundException {
         return nonTransaction(entityManager -> dao.findDTO(entityManager, id))
-                .orElseThrow(() -> new ResultNotFoundException());
+                .orElseThrow(() -> new ResultNotFoundException("Vehicle Id: " + id));
     }
     
     /**

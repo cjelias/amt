@@ -72,7 +72,7 @@ implements HasLogger {
 
     @Override
     public void update(EntityManager entityManager, UUID id, PatchItem ... patchItems) {
-        var entity = find(entityManager, id).orElseThrow(() -> new ResultNotFoundException());
+        var entity = find(entityManager, id).orElseThrow(() -> new ResultNotFoundException("Vehicle Id: " + id.toString()));
         
         for (var patchItem : patchItems) {
             var fieldName = patchItem.getPath();
