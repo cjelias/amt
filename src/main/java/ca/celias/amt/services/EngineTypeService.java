@@ -4,8 +4,10 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import ca.celias.amt.dto.EngineTypeDTO;
+import ca.celias.amt.dto.MaintenanceOptionDTO;
 import ca.celias.amt.dto.PatchItem;
 import ca.celias.amt.services.dao.EngineTypeDAO;
+import ca.celias.amt.services.dao.MaintenanceOptionsDAO;
 
 /**
  * 
@@ -17,6 +19,9 @@ public class EngineTypeService extends BaseService {
     @Inject
     private EngineTypeDAO dao;
 
+    @Inject
+    private MaintenanceOptionsDAO moDao;
+    
     /**
      * 
      * @return
@@ -65,5 +70,21 @@ public class EngineTypeService extends BaseService {
      */
     public void remove(String code) {
         transactionNoResult(entityManager -> dao.remove(entityManager, code));
+    }
+
+    /**
+     * 
+     * @param code
+     * @return
+     */
+    public MaintenanceOptionDTO[] getOptions(String code) {
+
+        return nonTransaction(entityManager -> {  
+            var engineType = dao.find(entityManager, code).get();
+            var results = moDao.findByEngineType(entityManager, engineType);
+            var size = results.size();
+            
+            return results.toArray(new MaintenanceOptionDTO[size]);
+        });
     }
 }

@@ -17,6 +17,7 @@ import javax.ws.rs.core.UriInfo;
 import com.google.gson.Gson;
 
 import ca.celias.amt.dto.EngineTypeDTO;
+import ca.celias.amt.dto.MaintenanceOptionDTO;
 import ca.celias.amt.dto.PatchItem;
 import ca.celias.amt.dto.ResponseEntity;
 import ca.celias.amt.dto.ResultDTO;
@@ -35,7 +36,7 @@ implements HasLogger {
 
     @Inject
     private EngineTypeService service;
- 
+
     @Inject
     @JsonPatch
     private Gson gson;
@@ -79,6 +80,7 @@ implements HasLogger {
 
     @GET
     @Path("{code}")
+    @Produces(MediaType.APPLICATION_JSON)
     public EngineTypeDTO get(@PathParam("code") String code)
     throws ResultNotFoundException {
         logger().trace("ENTER get({})", code);
@@ -89,6 +91,47 @@ implements HasLogger {
             logger().trace("EXIT get({})", code);
         }
     }
+
+    @GET
+    @Path("{code}/maintenanceoptions")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MaintenanceOptionDTO [] getMaintenanceOptions(@PathParam("code") String code)
+    throws ResultNotFoundException {
+        logger().trace("getMaintenanceOptions get({})", code);
+        
+        try {
+            return service.getOptions(code);
+        } finally {
+            logger().trace("EXIT getMaintenanceOptions({})", code);
+        }
+    }
+
+    @PUT
+    @Path("{code}/maintenanceoptions/{option}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void addMaintenanceOptions(@PathParam("code") String code, @PathParam("option") String option)
+    throws ResultNotFoundException {
+        logger().trace("ENTER addMaintenanceOptions({})", code, option);
+        
+        try {
+        } finally {
+            logger().trace("EXIT addMaintenanceOptions({})", code, option);
+        }
+    }
+
+    @DELETE
+    @Path("{code}/maintenanceoptions/{option}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void removeMaintenanceOptions(@PathParam("code") String code, @PathParam("option") String option)
+    throws ResultNotFoundException {
+        logger().trace("ENTER removeMaintenanceOptions({},{})", code, option);
+        
+        try {
+        } finally {
+            logger().trace("EXIT removeMaintenanceOptions({},{})", code, option);
+        }
+    }
+
     
     @PATCH
     @Path("{code}")

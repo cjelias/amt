@@ -1,11 +1,14 @@
 package ca.celias.amt.services.dao;
 
+import java.util.List;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 
 import ca.celias.amt.dto.MaintenanceOptionDTO;
 import ca.celias.amt.dto.PatchItem;
 import ca.celias.amt.services.ResultNotFoundException;
+import ca.celias.amt.services.entity.EngineType;
 import ca.celias.amt.services.entity.MaintenanceOption;
 
 /**
@@ -51,5 +54,17 @@ public class MaintenanceOptionsDAO extends BaseDAO<MaintenanceOptionDTO,Maintena
                 entity.setDescription(value);
             }
         }
+    }
+    
+    /**
+     * 
+     * @param entityManager
+     * @param engineType
+     * @return
+     */
+    public List<MaintenanceOptionDTO> findByEngineType(EntityManager entityManager, EngineType engineType) {
+        return entityManager.createNamedQuery(MaintenanceOption.QUERY_FIND_ENGINETYPE_DTO, MaintenanceOptionDTO.class)
+                .setParameter("engineType", engineType)
+                .getResultList();
     }
 }

@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -20,10 +19,12 @@ import org.hibernate.annotations.DynamicUpdate;
  * @author Chris Elias
  */
 @Entity(name="MaintenanceOption")
-@NamedQueries( {
-    @NamedQuery(name = MaintenanceOption.QUERY_FIND_ALL_DTO, query = "SELECT " + MaintenanceOption.CONSTRUCT_PARAM + " FROM MaintenanceOption m"),
-    @NamedQuery(name = MaintenanceOption.QUERY_FIND_DTO, query = "SELECT " + MaintenanceOption.CONSTRUCT_PARAM + " FROM MaintenanceOption m WHERE m.code =:oid"),
-})
+@NamedQuery(name = MaintenanceOption.QUERY_FIND_ALL_DTO, 
+            query = "SELECT " + MaintenanceOption.CONSTRUCT_PARAM + " FROM MaintenanceOption m")
+@NamedQuery(name = MaintenanceOption.QUERY_FIND_DTO, 
+            query = "SELECT " + MaintenanceOption.CONSTRUCT_PARAM + " FROM MaintenanceOption m WHERE m.code =:oid")
+@NamedQuery(name = MaintenanceOption.QUERY_FIND_ENGINETYPE_DTO, 
+            query = "SELECT " + MaintenanceOption.CONSTRUCT_PARAM + " FROM MaintenanceOption m WHERE :engineType MEMBER OF m.engineTypes")
 @DynamicUpdate
 @Table(name="MAINTENANCE_OPTION")
 public class MaintenanceOption
@@ -31,6 +32,7 @@ implements AmtEntity<String> {
     
     public static final String QUERY_FIND_DTO = "MaintenanceOption.FindDTO";
     public static final String QUERY_FIND_ALL_DTO = "MaintenanceOption.FindAllDTO";
+    public static final String QUERY_FIND_ENGINETYPE_DTO = "MaintenanceOption.FindEngineTypeDTO";
     
     protected static final String CONSTRUCT_PARAM = 
             "new ca.celias.amt.dto.MaintenanceOptionDTO(m.code, m.description)";
