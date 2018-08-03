@@ -50,7 +50,10 @@ public class MaintenanceOptionsCRUDTest extends BaseService {
     @DisplayName("MaintenanceOptions - Create/Read/Update/Delete")
     public void crud() {
         transactionNoResult(entityManager -> {
-            var dto = new MaintenanceOptionDTO(testCode, description);
+            var dto = MaintenanceOptionDTO.emptyBuilder()
+                        .withCode(testCode).withDescription(description)
+                        .build();
+            
             var code = dao.create(entityManager, dto);
             
             assertEquals(testCode, code, () -> "created dto.code" );
@@ -76,13 +79,17 @@ public class MaintenanceOptionsCRUDTest extends BaseService {
     @Test
     @DisplayName("Duplicate Insert Test")
     public void duplicateTest() {
-        var dto = new MaintenanceOptionDTO(testCode, description);
+        var dto = MaintenanceOptionDTO.emptyBuilder()
+                .withCode(testCode).withDescription(description)
+                .build();
 
         transactionNoResult(entityManager -> dao.create(entityManager, dto));
         
         assertThrows(PersistenceException.class, ()-> {
+            var dtoDup = dto.builder().build();
+            
             try {
-                transactionNoResult(entityManager -> dao.create(entityManager, dto));
+                transactionNoResult(entityManager -> dao.create(entityManager, dtoDup));
             } finally {
                 // remove the first entity that was created
                 transactionNoResult(entityManager -> dao.remove(entityManager, testCode));
