@@ -109,11 +109,13 @@ implements HasLogger {
     @PUT
     @Path("{code}/maintenanceoptions/{option}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void addMaintenanceOptions(@PathParam("code") String code, @PathParam("option") String option)
+    public Response addMaintenanceOptions(@PathParam("code") String code, @PathParam("option") String option)
     throws ResultNotFoundException {
         logger().trace("ENTER addMaintenanceOptions({})", code, option);
         
         try {
+            service.addOption(code, option);
+            return Response.status(200).entity(new ResponseEntity("OK")).build();
         } finally {
             logger().trace("EXIT addMaintenanceOptions({})", code, option);
         }
@@ -122,11 +124,13 @@ implements HasLogger {
     @DELETE
     @Path("{code}/maintenanceoptions/{option}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void removeMaintenanceOptions(@PathParam("code") String code, @PathParam("option") String option)
+    public Response removeMaintenanceOptions(@PathParam("code") String code, @PathParam("option") String option)
     throws ResultNotFoundException {
         logger().trace("ENTER removeMaintenanceOptions({},{})", code, option);
         
         try {
+            service.removeOption(code, option);
+            return Response.status(200).entity(new ResponseEntity("OK")).build();
         } finally {
             logger().trace("EXIT removeMaintenanceOptions({},{})", code, option);
         }
