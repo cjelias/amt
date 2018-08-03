@@ -6,7 +6,7 @@
     <div class="card">
       <div class="card-header">Engine Types</div>
       <div class="card-body">
-        <table id="optionlist" class="table table-striped table-bordered" style="width:100%">
+        <table id="engineTypeTable" class="table table-striped table-bordered" style="width:100%">
           <thead>
             <tr>
               <th>Code</th>
@@ -32,10 +32,10 @@
     <div class="card">
       <div class="card-header">Engine Type</div>
       <div class="card-body">
-        <div class="alert alert-success" id="alertSuccess" role="alert">
+        <div class="alert alert-success" id="alertSuccess" role="alert" style="display: none;">
           Update was successful
         </div>
-        <div class="alert alert-danger" id="alertError" role="alert">
+        <div class="alert alert-danger" id="alertError" role="alert" style="display: none;">
           Update Failed.
         </div>
                 
@@ -50,7 +50,6 @@
           </div>
           
           <span class="float-right pt-1">
-            <button type="button" id="butReset" onclick="resetForm()" class="btn btn-danger" disabled>Reset</button>
             <button type="button" id="butSubmit" onclick="patch()" class="btn btn-success" disabled>Submit Changes</button>
             <button type="button" id="butDelete" onclick="deleteEntity()" class="btn btn-danger" disabled>Delete</button>
           </span>
@@ -89,10 +88,11 @@
   </div>
 </div>
   
+<script src="/js/datafunctions.js"></script>
 <script type="text/javascript">
 var map = new Object();
 
-var table = $('#optionlist').DataTable({
+var table = $('#engineTypeTable').DataTable({
   "searching": true,
   "order": [[ 1, "desc" ]],
   "select": { "style": "single" },
@@ -103,27 +103,6 @@ var table = $('#optionlist').DataTable({
       {"data": "description"},
   ]
 });
-
-function resetForm() {
-  $('#butSubmit').disable(true);
-  $('#butReset').disable(true);
-  $("#optionform")[0].reset();
-}
-
-function bindField(field) {
-  var fieldName = '#'+field; 
-  console.log("binding " + fieldName);
-  $(fieldName).bind("change paste keyup", function() {
-    $('#butSubmit').disable(false);
-    $('#butReset').disable(false);
-    map[field] = $(this).val();
-  });
-}
-
-function unbindField(field) {
-  var fieldName = '#'+field; 
-  $(fieldName).unbind("change paste keyup");
-}
 
 function deleteEntity() {
   $.ajax({
@@ -166,7 +145,6 @@ function create() {
 
 function patch() {
   $('#butSubmit').disable(true);
-  $('#butReset').disable(true);
   $('#alertError').hide();
 
   var data = [];
@@ -194,11 +172,6 @@ function patch() {
 }
 
 $(document).ready(function() {
-  $('#alertSuccess').hide();
-  $('#alertError').hide();
-    
-  $('#butSubmit').disable(true);
-  
   table.on( 'select', function ( e, dt, type, indexes ) {
     var rowData = table.rows( indexes ).data().toArray();
     
@@ -212,13 +185,8 @@ $(document).ready(function() {
         $("#description").val(data["description"]);
         bindField('description');
         $('#butDelete').disable(false);
+        $('#butSubmit').disable(true);
       },
-      error : function(jqXHR, textStatus, errorThrown) {
-        console.log("The following error occured: " + textStatus, errorThrown);
-      },
-      complete : function() {
-        console.log("Maintenance Options GET Ran");
-      }          
     });        
   })
   .on( 'deselect', function ( e, dt, type, indexes ) {
@@ -226,6 +194,7 @@ $(document).ready(function() {
       $("#description").val("");
       unbindField('description');
       selectedRow = null;
+      $('#butSubmit').disable(true);
       $('#butDelete').disable(true);
   });
 });
