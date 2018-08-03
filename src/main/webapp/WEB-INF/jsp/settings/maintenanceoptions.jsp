@@ -69,6 +69,8 @@
         </button>
       </div>
       <div class="modal-body">
+        <div class="alert alert-danger" id="alertErrorCreate" role="alert" style="display: none;">
+        </div>
         <form id="moCreateForm" >
           <div class="form-group">
             <label for="createCode">Code</label>
@@ -105,18 +107,19 @@ var table = $('#optionTable').DataTable({
 });
 
 function deleteEntity() {
-	  $.ajax({
-	    url: 'app/api/settings/maintenanceoptions/' + $("#code").val(),
-	    type: "DELETE",
-	    success : function(response, textStatus, jqXhr) {
-	        table.ajax.reload();
-	        $("#alertSuccess").show().delay(2000).fadeOut();
-	      },
-	      error : function(jqXHR, textStatus, errorThrown) {
-	        $('#alertError').show();
-	      }          
-	  });
-	}
+  $.ajax({
+    url: 'app/api/settings/maintenanceoptions/' + $("#code").val(),
+    type: "DELETE",
+    success : function(response, textStatus, jqXhr) {
+        table.ajax.reload();
+        $("#alertSuccess").show().delay(2000).fadeOut();
+      },
+      error : function(jqXHR, textStatus, errorThrown) {
+        $('#alertError').html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
+        $('#alertError').show();
+      }          
+  });
+}
 
 function create() {
   var data = JSON.stringify(convertFormToJSON($("#moCreateForm")));
@@ -138,7 +141,8 @@ function create() {
         $("#alertSuccess").show().delay(2000).fadeOut();
       },
       error : function(jqXHR, textStatus, errorThrown) {
-        $('#alertError').show();
+        $('#alertErrorCreate').html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
+        $('#alertErrorCreate').show();
       }          
   });
 }
@@ -166,6 +170,7 @@ function patch() {
       $("#alertSuccess").show().delay(2000).fadeOut();
     },
     error : function(jqXHR, textStatus, errorThrown) {
+      $('#alertError').html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
       $('#alertError').show();
     }          
   });

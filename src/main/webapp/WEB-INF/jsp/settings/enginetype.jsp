@@ -90,6 +90,9 @@
         </button>
       </div>
       <div class="modal-body">
+        <div class="alert alert-danger" id="alertErrorCreate" role="alert" style="display: none;">
+        </div>
+      
         <form id="moCreateForm" >
           <div class="form-group">
             <label for="createCode">Code</label>
@@ -129,37 +132,37 @@ function deleteEntity() {
   $.ajax({
     url: 'app/api/settings/enginetype/' + $("#code").val(),
     type: "DELETE",
-    success : function(data) {
+    success : function(data, textStatus, jqXHR) {
         table.ajax.reload();
         $("#alertSuccess").show().delay(2000).fadeOut();
       },
       error : function(jqXHR, textStatus, errorThrown) {
+        $('#alertError').html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
         $('#alertError').show();
       }          
   });
 }
 
 function create() {
-  var data = JSON.stringify(convertFormToJSON("#moCreateForm"));
-  
   $.ajax({
     url: 'app/api/settings/enginetype',
     type: "PUT",
-    data: data,
+    data: JSON.stringify(convertFormToJSON("#moCreateForm")),
     contentType: "application/json",
-    success : function(data) {
+    success : function(data, textStatus, jqXHR) {
         table.ajax.reload(function (json) {
           var newCode = '#' + $("#createCode").val();
           table.row(newCode).select();
-          $('#createCode').val("");
+          $("#createCode").val("");
           $("#createDescription").val("");
-          $('#createNewModal').modal('hide');
+          $("#createNewModal").modal('hide');
         });
 
         $("#alertSuccess").show().delay(2000).fadeOut();
       },
-      error : function(data) {
-        $('#alertError').show();
+      error : function(jqXHR, textStatus, errorThrown) {
+        $("#alertErrorCreate").html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
+        $("#alertErrorCreate").show();
       }          
   });
 }
@@ -180,13 +183,14 @@ function patch() {
     data : patchData,
     contentType : "application/json",
     type : 'PATCH',
-    success : function(data) {
+    success : function(data, textStatus, jqXHR) {
       table.ajax.reload(null, false);
       map = new Object();
       table.row($("#code").val()).select();
       $("#alertSuccess").show().delay(2000).fadeOut();
     },
     error : function(jqXHR, textStatus, errorThrown) {
+      $('#alertError').html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
       $('#alertError').show();
     }          
   });
@@ -198,10 +202,11 @@ $(document).ready(function() {
     $.ajax({
         url : 'app/api/settings/enginetype/' + $("#code").val() + '/maintenanceoptions/' + this.id,
         type : (this.checked) ? "PUT" : "DELETE",
-        success : function(data) {
+        success : function(data, textStatus, jqXHR) {
           $("#alertSuccessOption").show().delay(1000).fadeOut();
         },
-        error : function(data) {
+        error : function(jqXHR, textStatus, errorThrown) {
+          $('#alertErrorOption').html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
           $('#alertErrorOption').show();
         }          
       });
@@ -216,7 +221,7 @@ $(document).ready(function() {
       url: "app/api/settings/enginetype/" + rowData[0].code,
       dataType: "json",
       headers : {  "Content-Type" : "application/json" },
-      success: function(data) {
+      success: function(data, textStatus, jqXHR) {
         $('.form-check-input').prop('checked', false);
         $(".form-check-input").attr("disabled", false);
         $("#code").val(data["code"]);
@@ -233,7 +238,7 @@ $(document).ready(function() {
         url: "app/api/settings/enginetype/" + rowData[0].code + "/maintenanceoptions",
         dataType: "json",
         headers : {  "Content-Type" : "application/json" },
-        success: function(data) {
+        success: function(data, textStatus, jqXHR) {
         	for (var i = 0; i < data.length; i++) {
         		$("#" + data[i].code).prop('checked', true);
         	}

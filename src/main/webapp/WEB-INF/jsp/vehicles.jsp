@@ -167,13 +167,10 @@ function deleteEntity() {
 }
 
 function create() {
-  var data = JSON.stringify(convertFormToJSON($("#vehicleCreateForm")));
-  
-  console.log("Create JSON: " + data)
   $.ajax({
     url: 'app/api/vehicle',
     type: "PUT",
-    data: data,
+    data:  JSON.stringify(convertFormToJSON($("#vehicleCreateForm"))),
     contentType: "application/json",
     success : function(data, textStatus, jqXHR) {
         var loc = jqXHR.getResponseHeader('Location').split("/");
@@ -195,7 +192,8 @@ function create() {
         $("#alertSuccess").show().delay(2000).fadeOut();
       },
       error : function(jqXHR, textStatus, errorThrown) {
-        $('#alertErrorCreate').html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
+        var responseObj = JSON.parse(jqXHR.responseText);
+        $('#alertErrorCreate').html(responseObj.message);
         $('#alertErrorCreate').show();
       }          
   });
