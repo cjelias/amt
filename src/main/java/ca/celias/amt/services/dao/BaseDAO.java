@@ -84,7 +84,7 @@ implements HasLogger {
      * @param entity
      * @return
      */
-    protected IDTYPE create(EntityManager entityManager, ENTITY entity) {
+    public IDTYPE create(EntityManager entityManager, ENTITY entity) {
         entityManager.persist(entity);
         return entity.getOid();
     }
@@ -95,7 +95,7 @@ implements HasLogger {
      * @param id
      * @return
      */
-    protected Optional<ENTITY> find(EntityManager entityManager, IDTYPE id) {
+    public Optional<ENTITY> find(EntityManager entityManager, IDTYPE id) {
         return findOrEmpty(() -> entityManager.find(entityType, id));
     }
 
