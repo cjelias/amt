@@ -151,6 +151,9 @@ function create() {
         table.ajax.reload(function (json) {
           var newCode = '#' + $("#createCode").val();
           table.row(newCode).select();
+          $('#createCode').val("");
+          $("#createDescription").val("");
+          $('#createNewModal').modal('hide');
         });
 
         $("#alertSuccess").show().delay(2000).fadeOut();
