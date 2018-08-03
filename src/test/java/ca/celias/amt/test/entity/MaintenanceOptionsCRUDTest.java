@@ -63,7 +63,7 @@ public class MaintenanceOptionsCRUDTest extends BaseService {
             assertNotNull(readDTO, () -> "dto");
             assertEquals(testCode, readDTO.getCode(), () -> "read dto.code" );
             
-            var patchItem = new PatchItem("add", "description", new PatchValue(updateDescription));
+            var patchItem = new PatchItem("replace", "description", new PatchValue(updateDescription));
             
             dao.update(entityManager, code, patchItem);
             
