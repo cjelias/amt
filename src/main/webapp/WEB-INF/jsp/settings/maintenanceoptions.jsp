@@ -106,7 +106,7 @@ var table = $('#optionTable').DataTable({
 
 function deleteEntity() {
 	  $.ajax({
-	    url: uri, // 'app/api/settings/maintenanceoptions/' + $("#code").val(),
+	    url: 'app/api/settings/maintenanceoptions/' + $("#code").val(),
 	    type: "DELETE",
 	    success : function(response, textStatus, jqXhr) {
 	        table.ajax.reload();
@@ -119,7 +119,7 @@ function deleteEntity() {
 	}
 
 function create() {
-  var data = JSON.stringify(convertFormToJSON(form));
+  var data = JSON.stringify(convertFormToJSON($("#moCreateForm")));
   
   $.ajax({
     url: 'app/api/settings/maintenanceoptions',
