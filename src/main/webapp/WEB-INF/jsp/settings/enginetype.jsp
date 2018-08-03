@@ -39,7 +39,7 @@
           Update Failed.
         </div>
                 
-        <form id="optionform" >
+        <form id="engineTypeForm" >
           <div class="form-group">
             <label for="code">Code</label>
             <input id="code" name="code" type="text" size="15" class="form-control" readonly="readonly">
@@ -55,7 +55,30 @@
           </span>
         </form>  
       </div> 
+    </div>
+    
+    <div class="card">
+      <div class="card-header">Repair Options</div>
+      <div class="card-body">
+        <div class="alert alert-success" id="alertSuccessOption" role="alert" style="display: none;">
+          Update was successful
+        </div>
+        <div class="alert alert-danger" id="alertErrorOption" role="alert" style="display: none;">
+          Update Failed.
+        </div>
+                
+        <form id="optionform" >
+          <c:forEach items="${OPTIONS}" var="option">
+          <div class="form-group ml-5">
+            <label for="${option.code}">
+                <input id="${option.code}" name="${option.code}" type="checkbox" class="form-check-input">${option.description}
+            </label>
+          </div>
+          </c:forEach>
+        </form>  
+      </div> 
     </div>    
+     
   </div>
 </div>
 
