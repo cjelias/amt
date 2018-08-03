@@ -50,8 +50,8 @@ public class VehicleCRUDTest extends BaseService {
     private final int year = 2018;
     private final String make = "FORD";
     private final String model = "F-F150";
-    private final double odReading = 15_000;
-    private final double newOdReading = 18_000;
+    private final Double odReading = 15_000d;
+    private final Double newOdReading = 18_000d;
     
     private final String engineType = "Gas-TEST";
     
