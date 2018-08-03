@@ -12,6 +12,10 @@ import ca.celias.amt.services.entity.EngineType;
 import ca.celias.amt.services.entity.MaintenanceOption;
 import ca.celias.amt.services.entity.Vehicle;
 
+/**
+ *
+ * @author Chris Elias
+ */
 @ApplicationScoped
 public class VehicleDAO extends BaseDAO<VehicleDTO, Vehicle, UUID> {
 

@@ -8,6 +8,10 @@ import ca.celias.amt.dto.PatchItem;
 import ca.celias.amt.mvc.ResultNotFoundException;
 import ca.celias.amt.services.entity.MaintenanceOption;
 
+/**
+ *
+ * @author Chris Elias
+ */
 @ApplicationScoped
 public class SchedulerDAO extends BaseDAO<MaintenanceOptionDTO,MaintenanceOption, String> {
 

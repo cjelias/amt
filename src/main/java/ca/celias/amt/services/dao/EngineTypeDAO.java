@@ -8,6 +8,10 @@ import ca.celias.amt.dto.PatchItem;
 import ca.celias.amt.mvc.ResultNotFoundException;
 import ca.celias.amt.services.entity.EngineType;
 
+/**
+ *
+ * @author Chris Elias
+ */
 @ApplicationScoped
 public class EngineTypeDAO extends BaseDAO<EngineTypeDTO, EngineType, String> {
 
