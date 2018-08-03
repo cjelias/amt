@@ -80,11 +80,48 @@ public class EngineTypeService extends BaseService {
     public MaintenanceOptionDTO[] getOptions(String code) {
 
         return nonTransaction(entityManager -> {  
-            var engineType = dao.find(entityManager, code).get();
+            var engineType = dao.find(entityManager, code)
+                    .orElseThrow(() -> new ResultNotFoundException());
+            
             var results = moDao.findByEngineType(entityManager, engineType);
             var size = results.size();
             
             return results.toArray(new MaintenanceOptionDTO[size]);
         });
     }
+    
+    /**
+     * 
+     * @param code
+     * @param option
+     */
+    public void addOption(String code, String option) {
+        transactionNoResult(entityManager -> {
+            var engineType = dao.find(entityManager, code)
+                    .orElseThrow(() -> new ResultNotFoundException());
+            
+            var newOption = moDao.find(entityManager, option)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid option ->" + option ));
+            
+            engineType.getMaintenanceOptions().add(newOption);
+        });
+    }
+    
+    /**
+     * 
+     * @param code
+     * @param option
+     */
+    public void removeOption(String code, String option) {
+        transactionNoResult(entityManager -> {
+            var engineType = dao.find(entityManager, code)
+                    .orElseThrow(() -> new ResultNotFoundException());
+            
+            var removeOption = moDao.find(entityManager, option)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid option ->" + option ));
+            
+            engineType.getMaintenanceOptions().remove(removeOption);
+        });
+    }
+    
 }
