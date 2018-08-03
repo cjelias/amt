@@ -25,6 +25,9 @@ implements AmtEntity<UUID> {
     @Id
     @Column(name="OID", insertable=true, updatable=false, nullable=false, columnDefinition=UUID_COL_DEF)
     private UUID oid;
+    
+    @Column(name="VIN", length=17)
+    private String vin;
 
     @Column(name="VEHICLE_YEAR", length=4)
     private int year;
