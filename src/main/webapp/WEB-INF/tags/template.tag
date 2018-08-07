@@ -1,8 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ tag description="Main Page template" pageEncoding="UTF-8"%>
+<%@ attribute name="title" fragment="true" %>
+<%@ attribute name="extraJavascript" fragment="true" required="false" %>
+<%@ attribute name="extraCSS" fragment="true" required="false" %>
 
-<!-- Check out for downloads -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:set var="req" value="${pageContext.request}" />
 <c:set var="url">${req.requestURL}</c:set>
@@ -24,9 +27,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ajax-bootstrap-select/1.4.4/css/ajax-bootstrap-select.min.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <jsp:invoke fragment="extraCSS"/>
 </head>
 
-<body class="bg-light">
+<body>
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <a class="navbar-brand" href="#">Automobile Maintenance Tracker</a>
     <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
@@ -35,21 +39,16 @@
 
     <div class="collapse navbar-collapse" id="navbarsAmt">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item" id="menuVehicles" data-page="vehicles"><a class="nav-link" href="#/vehicles">Vehicles</a></li>
-          
-        <li class="nav-item dropdown" id="menuSettings">
-          <a class="nav-link dropdown-toggle" href="#" id="ddSettings" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
-          <div class="dropdown-menu" aria-labelledby="ddSettings">
-            <a class="dropdown-item" parent="menuSettings" id="enginetype" data-page="settings/enginetype" href="#/settings/enginetype">Engine Type</a>
-            <a class="dropdown-item" parent="menuSettings" id="maintenanceoptions" data-page="settings/maintenanceoptions" href="#/settings/maintenanceoptions">Maintenance Options</a>
-          </div>
-        </li>          
+        <li class="nav-item ${NAV_VEHICLE}" id="menuVehicles" ><a class="nav-link" href="<c:url value="/ui/vehicles" />"  >Vehicles</a></li>
+        <li class="nav-item ${NAV_ENGINE_TYPE}" id="menuEngineType" ><a class="nav-link" href="<c:url value="/ui/enginetype" />"  >Engine Type</a></li>
+        <li class="nav-item ${NAV_MAINTENANCE_OPTIONS}" id="menuMaintenanceOptions" ><a class="nav-link" href="<c:url value="/ui/maintenanceoptions" />"  >Maintenance Options</a></li>
       </ul>
       <a class="btn btn-outline-light" href="/logout">Logout</a>
     </div>
   </nav>
   
   <div class="container-fluid pt-2">
+      <jsp:doBody/>
   </div>
   
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>  
@@ -62,6 +61,7 @@
   <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <script src="/js/amt.js"></script>
+  <jsp:invoke fragment="extraJavascript"/>
   
 </body>
 </html>

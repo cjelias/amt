@@ -6,56 +6,49 @@ jQuery.fn.extend({
   }
 });
 
-var routes = {};
-var container = $(".container-fluid");
-
-function route(id, uri, parent) {
-  routes[uri] = { id: id, parent: parent };
-}
-
-function router() {
-  var uri = location.hash.substring(2) || 'vehicles';
-  var route = routes[uri];
-   
-  if (route && container) {
-    container.load('/mvc/' +  uri);
-      
-    $('.nav-item').removeClass('active');
-    $('.dropdown-item').removeClass('active');
-    $("#" + route.id ).addClass('active');
-    $("#" + route.parent ).addClass('active');
-  }
-}
-
-$(document).ready(function() {
-  $(".nav-item").each(function() {
-    var idAttr = $(this).attr("id");
-    var dataPageAttr = $(this).attr("data-page");
-        
-    if (typeof dataPageAttr !== typeof undefined && dataPageAttr !== false) {
-      console.log("dropdown-item: " + idAttr + " data-page: " + dataPageAttr );
-      route( idAttr, dataPageAttr );
-    }
-  });
-
-  $(".dropdown-item").each(function() {
-    var idAttr = $(this).attr("id");
-    var dataPageAttr = $(this).attr("data-page");
-    var parentAttr = $(this).attr("parent");
-        
-    if (typeof dataPageAttr !== typeof undefined && dataPageAttr !== false) {
-      console.log("dropdown-item: " + idAttr + " data-page: " + dataPageAttr + " parent: " + parentAttr );
-      route( idAttr, dataPageAttr, parentAttr );
-    }
-  });
-
-  $(window).bind('hashchange', router);
-  router();
-});
-
 $(function () {
   'use strict'
   $('[data-toggle="offcanvas"]').on('click', function () {
     $('.offcanvas-collapse').toggleClass('open')
   })
 })
+
+function bindField(field) {
+  var fieldName = '#'+field; 
+  $(fieldName).bind("change paste keyup", function() {
+    $('#butUpdate').disable(false);
+    map[field] = $(this).val();
+  });
+}
+
+function unbindField(field) {
+  var fieldName = '#'+field; 
+  $(fieldName).unbind("change paste keyup");
+}
+
+function convertFormToJSON(form){
+  var arrayData, objectData;
+  arrayData = form.serializeArray();
+  objectData = {};
+
+  $.each(arrayData, function() {
+    var value;
+
+    if (this.value != null) {
+      value = this.value;
+    } else {
+      value = '';
+    }
+
+    if (objectData[this.name] != null) {
+      if (!objectData[this.name].push) {
+        objectData[this.name] = [objectData[this.name]];
+      }
+
+      objectData[this.name].push(value);
+    } else {
+      objectData[this.name] = value;
+    }
+  });
+
+  return objectData;}

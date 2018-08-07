@@ -10,17 +10,14 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import ca.celias.amt.resources.HasLogger;
-import ca.celias.amt.ws.rs.settings.EngineTypeResources;
-import ca.celias.amt.ws.rs.settings.MaintenanceOptionsResource;
 
 /**
  * 
  * @author Chris Elias
  */
 @ApplicationPath("/api")
-public class APIApplication extends Application
+public class AMTApplication extends Application
 implements HasLogger {
-    
     @Override
     public Set<Class<?>> getClasses() {
         var classes = new HashSet<Class<?>>();

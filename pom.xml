@@ -17,12 +17,10 @@
         <version.asm>6.2</version.asm>
         <version.weld>3.0.5.Final</version.weld>
         <version.resteasy>3.6.0.Final</version.resteasy>
-        
         <version.jackson>2.9.6</version.jackson>
 
-        <version.ozark>1.0.0-m03</version.ozark>
         <version.cdi-api>2.0</version.cdi-api>
-        
+        <version.guava>26.0-jre</version.guava>
         <version.jaxb-api>2.3.0</version.jaxb-api>
         <version.jaxb-impl>2.3.0.1</version.jaxb-impl>
 
@@ -41,7 +39,6 @@
     </properties>
 
     <dependencies>
-    
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -157,10 +154,17 @@
             <artifactId>resteasy-servlet-initializer</artifactId>
             <version>${version.resteasy}</version>
         </dependency>
+        
         <dependency>
-            <groupId>org.mvc-spec.ozark</groupId>
-            <artifactId>ozark-resteasy</artifactId>
-            <version>${version.ozark}</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${version.guava}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- SLF4j/Logback -->
@@ -202,7 +206,7 @@
                     <artifactId>jboss-interceptors-api_1.2_spec</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>        
+        </dependency>   
         <dependency>
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>

@@ -19,6 +19,15 @@ public class PatchDTO {
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private String[] value;
 
+    public PatchDTO() {
+    }
+    
+    public PatchDTO(String op, String path, String ...values) {
+        this.op = op;
+        this.path = path;
+        this.value = values;
+    }
+    
     /**
      * @return the op
      */

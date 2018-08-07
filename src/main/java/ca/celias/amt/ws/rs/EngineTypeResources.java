@@ -1,5 +1,6 @@
-package ca.celias.amt.ws.rs.settings;
+package ca.celias.amt.ws.rs;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,7 +28,8 @@ import ca.celias.amt.services.ResultNotFoundException;
  * 
  * @author Chris Elias
  */
-@Path("/settings/enginetype")
+@Path("/enginetype")
+@RequestScoped
 public class EngineTypeResources
 implements HasLogger {
 

@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-    version="3.1">
-    <listener>
-        <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
-    </listener>
-
-    <servlet>
-        <servlet-name>RESTEasy WADL</servlet-name>
-        <servlet-class>org.jboss.resteasy.wadl.ResteasyWadlServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RESTEasy WADL</servlet-name>
-        <url-pattern>/api/application.xml</url-pattern>
-    </servlet-mapping>
-    <resource-env-ref>
-        <resource-env-ref-name>BeanManager</resource-env-ref-name>
-        <resource-env-ref-type>javax.enterprise.inject.spi.BeanManager</resource-env-ref-type>
-    </resource-env-ref>
-    <context-param>
-        <param-name>resteasy.injector.factory</param-name>
-        <param-value>org.jboss.resteasy.cdi.CdiInjectorFactory</param-value>
-    </context-param>
-    <session-config>
-        <tracking-mode>COOKIE</tracking-mode>
-    </session-config>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <listener>
+    <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>RESTEasy WADL</servlet-name>
+    <servlet-class>org.jboss.resteasy.wadl.ResteasyWadlServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>RESTEasy WADL</servlet-name>
+    <url-pattern>/api/application.xml</url-pattern>
+  </servlet-mapping>
+  <resource-env-ref>
+    <resource-env-ref-name>BeanManager</resource-env-ref-name>
+    <resource-env-ref-type>javax.enterprise.inject.spi.BeanManager</resource-env-ref-type>
+  </resource-env-ref>
+  <context-param>
+    <param-name>resteasy.injector.factory</param-name>
+    <param-value>org.jboss.resteasy.cdi.CdiInjectorFactory</param-value>
+  </context-param>
+  <session-config>
+    <tracking-mode>COOKIE</tracking-mode>
+  </session-config>
 </web-app>
