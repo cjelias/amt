@@ -19,7 +19,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import ca.celias.amt.dto.EngineTypeDTO;
-import ca.celias.amt.dto.PatchItem;
 import ca.celias.amt.dto.PatchDTO;
 import ca.celias.amt.dto.VehicleDTO;
 import ca.celias.amt.services.BaseService;
@@ -82,7 +81,7 @@ public class VehicleCRUDTest extends BaseService {
             assertNotNull(readDTO, () -> "dto");
             assertEquals(uuid.toString(), readDTO.getOid(), () -> "read dto.oid" );
             
-            var patchItem = new PatchItem("replace", "odometerReading", new PatchDTO(Double.toString(newOdReading)));
+            var patchItem = new PatchDTO("replace", "odometerReading", Double.toString(newOdReading));
             
             dao.update(entityManager, uuid, patchItem);
             
