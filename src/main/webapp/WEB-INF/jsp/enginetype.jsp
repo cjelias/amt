@@ -52,7 +52,7 @@ $("#butCreate").on("click", function() {
   $.ajax({
     url: '/api/enginetype',
     type: "PUT",
-    data: JSON.stringify(convertFormToJSON("#moCreateForm")),
+    data: JSON.stringify(convertFormToJSON($("#moCreateForm"))),
     contentType: "application/json",
     success : function(data, textStatus, jqXHR) {
         table.ajax.reload(function (json) {
