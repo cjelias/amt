@@ -13,7 +13,7 @@ import ca.celias.amt.services.MaintenanceOptionsService;
  * 
  * @author Chris Elias
  */
-@Path("/controller/settings/enginetype")
+@Path("/settings/enginetype")
 public class EngineType 
 implements HasLogger {
 

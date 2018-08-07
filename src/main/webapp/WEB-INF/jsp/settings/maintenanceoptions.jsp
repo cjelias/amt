@@ -16,7 +16,6 @@
           <tbody>
           </tbody>
         </table>
-          
       </div> 
     </div>
     <div class="card-footer">
@@ -35,23 +34,25 @@
         <div class="alert alert-success" id="alertSuccess" role="alert" style="display: none;">
           Update was successful
         </div>
-        <div class="alert alert-danger" id="alertError" role="alert" style="display: none;">
-          Update Failed.
-        </div>
+        <div class="alert alert-danger" id="alertError" role="alert" style="display: none;"></div>
                 
         <form id="optionform" >
-          <div class="form-group">
-            <label for="code">Code</label>
-            <input id="code" name="code" type="text" size="15" class="form-control" readonly="readonly">
+          <div class="form-group row">
+            <label for="code" class="col-sm-3 col-form-label">Code</label>
+            <div class="col-sm-7">
+              <input id="code" name="code" type="text" size="15" class="form-control" readonly="readonly">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="description">Description</label>
-            <input id="description" name="description" type="text" size="256" class="form-control">
+          <div class="form-group row">
+            <label for="description" class="col-sm-3 col-form-label">Description</label>
+            <div class="col-sm-7">
+              <input id="description" name="description" type="text" size="256" class="form-control">
+            </div>
           </div>
           
           <span class="float-right pt-1">
-            <button type="button" id="butSubmit" onclick="patch()" class="btn btn-success" disabled>Submit Changes</button>
-            <button type="button" id="butDelete" onclick="deleteEntity()" class="btn btn-danger" disabled>Delete</button>
+            <button type="button" id="butUpdate" class="btn btn-success" disabled>Submit Changes</button>
+            <button type="button" id="butDelete" class="btn btn-danger" disabled>Delete</button>
           </span>
         </form>  
       </div> 
@@ -72,19 +73,40 @@
         <div class="alert alert-danger" id="alertErrorCreate" role="alert" style="display: none;">
         </div>
         <form id="moCreateForm" >
-          <div class="form-group">
-            <label for="createCode">Code</label>
-            <input id="createCode" name="code" type="text" size="15" class="form-control">
+          <div class="form-group row">
+            <label for="createCode" class="col-sm-3 col-form-label">Code</label>
+            <div class="col-sm-7">
+              <input id="createCode" name="code" type="text" size="15" class="form-control">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="createDescription">Description</label>
-            <input id="createDescription" name="description" type="text" size="256" class="form-control">
+          <div class="form-group row">
+            <label for="createDescription" class="col-sm-3 col-form-label">Description</label>
+            <div class="col-sm-7">
+              <input id="createDescription" name="description" type="text" size="256" class="form-control">
+            </div>
           </div>
         </form>  
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="create()" >Create</button>
+        <button type="button" class="btn btn-primary" id="butCreate" >Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modalDelete">
+  <div class="modal-dialog modal-sm-3 modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="moModalCenterTitle">Confirm Deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="butConfirmDelete">Yes</button>
+        <button type="button" class="btn btn-primary" id="butCancelDelete">No</button>
       </div>
     </div>
   </div>
@@ -99,35 +121,56 @@ var table = $('#optionTable').DataTable({
   "order": [[ 1, "desc" ]],
   "select": { "style": "single" },
   "rowId": 'code',
-  "ajax": { "url": "app/api/settings/maintenanceoptions" },
+  "ajax": { "url": "api/settings/maintenanceoptions" },
   "columns" : [
       {"data": "code"},
       {"data": "description"},
   ]
 });
 
-function deleteEntity() {
-  $.ajax({
-    url: 'app/api/settings/maintenanceoptions/' + $("#code").val(),
-    type: "DELETE",
-    success : function(response, textStatus, jqXhr) {
-        table.ajax.reload();
-        $("#alertSuccess").show().delay(2000).fadeOut();
-      },
-      error : function(jqXHR, textStatus, errorThrown) {
-        $('#alertError').html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
-        $('#alertError').show();
-      }          
+var modalConfirm = function(callback){
+  $("#butDelete").on("click", function() {
+    $("#modalDelete").modal('show');
   });
-}
 
-function create() {
-  var data = JSON.stringify(convertFormToJSON($("#moCreateForm")));
+  $("#butConfirmDelete").on("click", function() {
+    callback(true);
+    $("#modalDelete").modal('hide');
+  });
   
+  $("#butCancelDelete").on("click", function() {
+    callback(false);
+    $("#modalDelete").modal('hide');
+  });
+};
+
+modalConfirm(function(confirm){
+  if(confirm){
+    $.ajax({
+      url: 'api/settings/maintenanceoptions/' + $("#code").val(),
+      type: "DELETE",
+      success : function(response, textStatus, jqXhr) {
+          table.ajax.reload();
+          $("#alertSuccess").show().delay(2000).fadeOut();
+          $('#code').val("");
+          $("#description").val("");
+          unbindField('description');
+          $('#butUpdate').disable(true);
+          $('#butDelete').disable(true);
+        },
+        error : function(jqXHR, textStatus, errorThrown) {
+          $('#alertError').html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
+          $('#alertError').show();
+        }          
+    });
+  }
+});
+
+$("#butCreate").on("click", function(){
   $.ajax({
-    url: 'app/api/settings/maintenanceoptions',
+    url: 'api/settings/maintenanceoptions',
     type: "PUT",
-    data: data,
+    data: JSON.stringify(convertFormToJSON($("#moCreateForm"))),
     contentType: "application/json",
     success : function(response, textStatus, jqXhr) {
         table.ajax.reload(function (json) {
@@ -145,10 +188,10 @@ function create() {
         $('#alertErrorCreate').show();
       }          
   });
-}
+});
 
-function patch() {
-  $('#butSubmit').disable(true);
+$("#butUpdate").on("click", function() {
+  $('#butUpdate').disable(true);
   $('#alertError').hide();
 
   var data = [];
@@ -156,11 +199,9 @@ function patch() {
     data.push({ "op": "replace", "path" : k, "value" : map[k] });
   }
   
-  var patchData = JSON.stringify(data);
-  
   $.ajax({
-    url : 'app/api/settings/maintenanceoptions/' + $("#code").val(),
-    data : patchData,
+    url : 'api/settings/maintenanceoptions/' + $("#code").val(),
+    data : JSON.stringify(data),
     contentType : "application/json",
     type : 'PATCH',
     success : function(response, textStatus, jqXhr) {
@@ -174,34 +215,32 @@ function patch() {
       $('#alertError').show();
     }          
   });
-}
+});
 
-$(document).ready(function() {
-  table.on( 'select', function ( e, dt, type, indexes ) {
-    $('#alertError').hide();
-    var rowData = table.rows( indexes ).data().toArray();
-    
-    $.ajax({
-      type: "GET",
-      url: "app/api/settings/maintenanceoptions/" + rowData[0].code,
-      dataType: "json",
-      headers : {  "Content-Type" : "application/json" },
-      success: function(data) {
-        $("#code").val(data["code"]);
-        $("#description").val(data["description"]);
-        bindField('description');
-        $('#butDelete').disable(false);
-        $('#butSubmit').disable(true);
-      },
-    });        
-  })
-  .on( 'deselect', function ( e, dt, type, indexes ) {
-      $('#alertError').hide();
-      $('#code').val("");
-      $("#description").val("");
-      unbindField('description');
+table.on( 'select', function ( e, dt, type, indexes ) {
+  $('#alertError').hide();
+  var rowData = table.rows( indexes ).data().toArray();
+  
+  $.ajax({
+    type: "GET",
+    url: "api/settings/maintenanceoptions/" + rowData[0].code,
+    dataType: "json",
+    headers : {  "Content-Type" : "application/json" },
+    success: function(data) {
+      $("#code").val(data["code"]);
+      $("#description").val(data["description"]);
+      bindField('description');
+      $('#butDelete').disable(false);
       $('#butSubmit').disable(true);
-      $('#butDelete').disable(true);
-  });
+    },
+  });        
+})
+.on( 'deselect', function ( e, dt, type, indexes ) {
+    $('#alertError').hide();
+    $('#code').val("");
+    $("#description").val("");
+    unbindField('description');
+    $('#butUpdate').disable(true);
+    $('#butDelete').disable(true);
 });
 </script>

@@ -16,11 +16,9 @@ function route(id, uri, parent) {
 function router() {
   var uri = location.hash.substring(2) || 'scheduler';
   var route = routes[uri];
-  console.log("Route id: " + uri);
    
   if (route && container) {
-    console.log("Loading...." + uri);
-    container.load('/app/controller/' +  uri);
+    container.load('/mvc/' +  uri);
       
     $('.nav-item').removeClass('active');
     $('.dropdown-item').removeClass('active');

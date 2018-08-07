@@ -10,7 +10,7 @@ import ca.celias.amt.resources.HasLogger;
  * 
  * @author Chris Elias
  */
-@Path("/controller/scheduler")
+@Path("/scheduler")
 public class Scheduler 
 implements HasLogger {
 

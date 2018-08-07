@@ -98,6 +98,5 @@ public class MaintenanceOptionDTO {
         public MaintenanceOptionDTO build() {
             return new MaintenanceOptionDTO(this);
         }
-    }
-    
+    }   
 }

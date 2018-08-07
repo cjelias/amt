@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import ca.celias.amt.dto.PatchItem;
 import ca.celias.amt.dto.VehicleDTO;
+import ca.celias.amt.dto.VehicleMaintenanceDTO;
 import ca.celias.amt.services.dao.VehicleDAO;
 
 /**
@@ -50,6 +51,15 @@ public class VehicleService extends BaseService {
     throws ResultNotFoundException {
         return nonTransaction(entityManager -> dao.findDTO(entityManager, id))
                 .orElseThrow(() -> new ResultNotFoundException("Vehicle Id: " + id));
+    }
+    
+    /**
+     * 
+     * @param id
+     * @return
+     */
+    public VehicleMaintenanceDTO[] getHistory(UUID id) {
+        return new VehicleMaintenanceDTO[0];
     }
     
     /**

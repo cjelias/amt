@@ -1,7 +1,7 @@
 function bindField(field) {
   var fieldName = '#'+field; 
   $(fieldName).bind("change paste keyup", function() {
-    $('#butSubmit').disable(false);
+    $('#butUpdate').disable(false);
     map[field] = $(this).val();
   });
 }

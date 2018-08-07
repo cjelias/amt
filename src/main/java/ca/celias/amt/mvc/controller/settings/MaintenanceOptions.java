@@ -13,7 +13,7 @@ import ca.celias.amt.resources.HasLogger;
  * 
  * @author Chris Elias
  */
-@Path("/controller/settings/maintenanceoptions")
+@Path("/settings/maintenanceoptions")
 @RequestScoped
 public class MaintenanceOptions 
 implements HasLogger {

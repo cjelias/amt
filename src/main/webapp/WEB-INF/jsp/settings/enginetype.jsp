@@ -39,18 +39,22 @@
         </div>
                 
         <form id="engineTypeForm" >
-          <div class="form-group">
-            <label for="code">Code</label>
-            <input id="code" name="code" type="text" size="15" class="form-control" readonly="readonly">
+          <div class="form-group row">
+            <label for="code" class="col-sm-3 col-form-label">Code</label>
+            <div class="col-sm-7">
+              <input id="code" name="code" type="text" size="15" class="form-control" readonly="readonly">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="description">Description</label>
-            <input id="description" name="description" type="text" size="256" class="form-control">
+          <div class="form-group row">
+            <label for="description" class="col-sm-3 col-form-label">Description</label>
+            <div class="col-sm-7">
+              <input id="description" name="description" type="text" size="256" class="form-control">
+            </div>
           </div>
           
           <span class="float-right pt-1">
-            <button type="button" id="butSubmit" onclick="patch()" class="btn btn-success" disabled>Submit Changes</button>
-            <button type="button" id="butDelete" onclick="deleteEntity()" class="btn btn-danger" disabled>Delete</button>
+            <button type="button" id="butUpdate" class="btn btn-success" disabled>Submit Changes</button>
+            <button type="button" id="butDelete" class="btn btn-danger" disabled>Delete</button>
           </span>
         </form>  
       </div> 
@@ -75,8 +79,7 @@
           </c:forEach>
         </form>  
       </div> 
-    </div>    
-     
+    </div>
   </div>
 </div>
 
@@ -94,19 +97,40 @@
         </div>
       
         <form id="moCreateForm" >
-          <div class="form-group">
-            <label for="createCode">Code</label>
-            <input id="createCode" name="code" type="text" size="15" class="form-control">
+          <div class="form-group row">
+            <label for="createCode" class="col-sm-3 col-form-label">Code</label>
+            <div class="col-sm-7">
+              <input id="createCode" name="code" type="text" size="15" class="form-control">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="createDescription">Description</label>
-            <input id="createDescription" name="description" type="text" size="256" class="form-control">
+          <div class="form-group row">
+            <label for="createDescription" class="col-sm-3 col-form-label">Description</label>
+            <div class="col-sm-7">
+              <input id="createDescription" name="description" type="text" size="256" class="form-control">
+            </div>
           </div>
         </form>  
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="create()" >Create</button>
+        <button type="button" class="btn btn-primary" id="butCreate">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modalDelete">
+  <div class="modal-dialog modal-sm-3 modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="moModalCenterTitle">Confirm Deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="butConfirmDelete">Yes</button>
+        <button type="button" class="btn btn-primary" id="butCancelDelete">No</button>
       </div>
     </div>
   </div>
@@ -116,36 +140,50 @@
 <script type="text/javascript">
 var map = new Object();
 
-var table = $('#engineTypeTable').DataTable({
-  "searching": true,
-  "order": [[ 1, "desc" ]],
-  "select": { "style": "single" },
-  "rowId": 'code',
-  "ajax": { "url": "app/api/settings/enginetype" },
-  "columns" : [
-      {"data": "code"},
-      {"data": "description"},
-  ]
+var modalConfirm = function(callback){
+  $("#butDelete").on("click", function(){
+    $("#modalDelete").modal('show');
+  });
+
+  $("#butConfirmDelete").on("click", function(){
+    callback(true);
+    $("#modalDelete").modal('hide');
+  });
+  
+  $("#butCancelDelete").on("click", function(){
+    callback(false);
+    $("#modalDelete").modal('hide');
+  });
+};
+
+modalConfirm(function(confirm){
+  if(confirm){
+    $.ajax({
+      url: 'api/settings/enginetype/' + $("#code").val(),
+      type: "DELETE",
+      success : function(data, textStatus, jqXHR) {
+          table.ajax.reload();
+          $("#alertSuccess").show().delay(2000).fadeOut();
+          $('#code').val("");
+          $("#description").val("");
+          $('.form-check-input').prop('checked', false);
+          $(".form-check-input").attr("disabled", true);
+          unbindField('description');
+          selectedRow = null;
+          $('#butUpdate').disable(true);
+          $('#butDelete').disable(true);
+        },
+        error : function(jqXHR, textStatus, errorThrown) {
+          $('#alertError').html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
+          $('#alertError').show();
+        }          
+    });
+  }
 });
 
-function deleteEntity() {
+$("#butCreate").on("click", function() {
   $.ajax({
-    url: 'app/api/settings/enginetype/' + $("#code").val(),
-    type: "DELETE",
-    success : function(data, textStatus, jqXHR) {
-        table.ajax.reload();
-        $("#alertSuccess").show().delay(2000).fadeOut();
-      },
-      error : function(jqXHR, textStatus, errorThrown) {
-        $('#alertError').html(jqXHR.responseText + " -- " + textStatus + " -- " + errorThrown);
-        $('#alertError').show();
-      }          
-  });
-}
-
-function create() {
-  $.ajax({
-    url: 'app/api/settings/enginetype',
+    url: 'api/settings/enginetype',
     type: "PUT",
     data: JSON.stringify(convertFormToJSON("#moCreateForm")),
     contentType: "application/json",
@@ -165,10 +203,10 @@ function create() {
         $("#alertErrorCreate").show();
       }          
   });
-}
+});
 
-function patch() {
-  $('#butSubmit').disable(true);
+$("#butUpdate").on("click", function(){
+  $('#butUpdate').disable(true);
   $('#alertError').hide();
 
   var data = [];
@@ -179,7 +217,7 @@ function patch() {
   var patchData = JSON.stringify(data);
   
   $.ajax({
-    url : 'app/api/settings/enginetype/' + $("#code").val(),
+    url : 'api/settings/enginetype/' + $("#code").val(),
     data : patchData,
     contentType : "application/json",
     type : 'PATCH',
@@ -194,13 +232,25 @@ function patch() {
       $('#alertError').show();
     }          
   });
-}
+});
+
+var table = $('#engineTypeTable').DataTable({
+  "searching": true,
+  "order": [[ 1, "desc" ]],
+  "select": { "style": "single" },
+  "rowId": 'code',
+  "ajax": { "url": "api/settings/enginetype" },
+  "columns" : [
+      {"data": "code"},
+      {"data": "description"},
+  ]
+});
 
 $(document).ready(function() {
   $(".form-check-input").attr("disabled", true);
   $(".form-check-input").change(function() {
     $.ajax({
-        url : 'app/api/settings/enginetype/' + $("#code").val() + '/maintenanceoptions/' + this.id,
+        url : 'api/settings/enginetype/' + $("#code").val() + '/maintenanceoptions/' + this.id,
         type : (this.checked) ? "PUT" : "DELETE",
         success : function(data, textStatus, jqXHR) {
           $("#alertSuccessOption").show().delay(1000).fadeOut();
@@ -212,13 +262,13 @@ $(document).ready(function() {
       });
   });
   
-  table.on( 'select', function ( e, dt, type, indexes ) {
+  table.on('select', function ( e, dt, type, indexes ) {
     var rowData = table.rows( indexes ).data().toArray();
     
     // get data for form
     $.ajax({
       type: "GET",
-      url: "app/api/settings/enginetype/" + rowData[0].code,
+      url: "api/settings/enginetype/" + rowData[0].code,
       dataType: "json",
       headers : {  "Content-Type" : "application/json" },
       success: function(data, textStatus, jqXHR) {
@@ -228,14 +278,14 @@ $(document).ready(function() {
         $("#description").val(data["description"]);
         bindField('description');
         $('#butDelete').disable(false);
-        $('#butSubmit').disable(true);
+        $('#butUpdate').disable(true);
       },
     });
 
     // get options for engine type
     $.ajax({
         type: "GET",
-        url: "app/api/settings/enginetype/" + rowData[0].code + "/maintenanceoptions",
+        url: "api/settings/enginetype/" + rowData[0].code + "/maintenanceoptions",
         dataType: "json",
         headers : {  "Content-Type" : "application/json" },
         success: function(data, textStatus, jqXHR) {
@@ -252,7 +302,7 @@ $(document).ready(function() {
       $(".form-check-input").attr("disabled", true);
       unbindField('description');
       selectedRow = null;
-      $('#butSubmit').disable(true);
+      $('#butUpdate').disable(true);
       $('#butDelete').disable(true);
   });
 });

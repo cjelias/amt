@@ -5,6 +5,7 @@ import javax.mvc.Models;
 import javax.mvc.annotation.Controller;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 import ca.celias.amt.resources.HasLogger;
 import ca.celias.amt.services.EngineTypeService;
@@ -13,7 +14,7 @@ import ca.celias.amt.services.EngineTypeService;
  * 
  * @author Chris Elias
  */
-@Path("/controller/vehicles")
+@Path("/vehicles")
 public class Vehicles 
 implements HasLogger {
 
@@ -37,4 +38,19 @@ implements HasLogger {
         }
     }
 
+    @Path("{vehicleId}/appointment/{engineType}")
+    @GET
+    @Controller
+    public String maintenanceOptions(@PathParam("vehicleId") String vehicleId, @PathParam("engineType") String engineType ) {
+        logger().trace("ENTER maintenanceOptions({},{})", vehicleId, engineType);
+        
+        try {
+            models.put("OPTIONS", service.getOptions(engineType));
+            models.put("VEHICLE_OID",vehicleId);
+            
+            return "/WEB-INF/jsp/addAppointment.jsp";
+        } finally {
+            logger().trace("EXIT maintenanceOptions({},{})", vehicleId, engineType);
+        }
+    }
 }
