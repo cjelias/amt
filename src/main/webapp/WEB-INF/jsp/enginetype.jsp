@@ -26,7 +26,7 @@ var modalConfirm = function(callback){
 modalConfirm(function(confirm){
   if(confirm){
     $.ajax({
-      url: '/api/enginetype/' + $("#code").val(),
+      url: 'api/enginetype/' + $("#code").val(),
       type: "DELETE",
       success : function(data, textStatus, jqXHR) {
           table.ajax.reload();
@@ -50,7 +50,7 @@ modalConfirm(function(confirm){
 
 $("#butCreate").on("click", function() {
   $.ajax({
-    url: '/api/enginetype',
+    url: 'api/enginetype',
     type: "PUT",
     data: JSON.stringify(convertFormToJSON($("#moCreateForm"))),
     contentType: "application/json",
@@ -82,7 +82,7 @@ $("#butUpdate").on("click", function(){
   }
   
   $.ajax({
-    url : '/api/enginetype/' + $("#code").val(),
+    url : 'api/enginetype/' + $("#code").val(),
     data : JSON.stringify(data),
     contentType : "application/json",
     type : 'PATCH',
@@ -104,7 +104,7 @@ var table = $('#engineTypeTable').DataTable({
   "order": [[ 1, "desc" ]],
   "select": { "style": "single" },
   "rowId": 'code',
-  "ajax": { "url": "/api/enginetype" },
+  "ajax": { "url": "api/enginetype" },
   "columns" : [
       {"data": "code"},
       {"data": "description"},
@@ -115,7 +115,7 @@ $(document).ready(function() {
   $(".form-check-input").attr("disabled", true);
   $(".form-check-input").change(function() {
     $.ajax({
-        url : '/api/enginetype/' + $("#code").val() + '/maintenanceoptions/' + this.id,
+        url : 'api/enginetype/' + $("#code").val() + '/maintenanceoptions/' + this.id,
         type : (this.checked) ? "PUT" : "DELETE",
         success : function(data, textStatus, jqXHR) {
           $("#alertSuccessOption").show().delay(1000).fadeOut();
@@ -133,7 +133,7 @@ $(document).ready(function() {
     // get data for form
     $.ajax({
       type: "GET",
-      url: "/api/enginetype/" + rowData[0].code,
+      url: "api/enginetype/" + rowData[0].code,
       dataType: "json",
       headers : {  "Content-Type" : "application/json" },
       success: function(data, textStatus, jqXHR) {
@@ -150,7 +150,7 @@ $(document).ready(function() {
     // get options for engine type
     $.ajax({
         type: "GET",
-        url: "/api/enginetype/" + rowData[0].code + "/maintenanceoptions",
+        url: "api/enginetype/" + rowData[0].code + "/maintenanceoptions",
         dataType: "json",
         headers : {  "Content-Type" : "application/json" },
         success: function(data, textStatus, jqXHR) {

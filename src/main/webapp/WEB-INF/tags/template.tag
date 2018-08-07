@@ -19,7 +19,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Automobile Maintenance Tracker</title>
-  <link rel="stylesheet" href="/css/amt.css">
+  <link rel="stylesheet" href="css/amt.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
@@ -60,7 +60,7 @@
   <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-  <script src="/js/amt.js"></script>
+  <script src="js/amt.js"></script>
   <jsp:invoke fragment="extraJavascript"/>
   
 </body>

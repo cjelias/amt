@@ -29,8 +29,12 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <root level="WARN">
-        <appender-ref ref="FILE" />
+    <logger name="org.jboss.weld" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
     </root>
 
 </configuration>

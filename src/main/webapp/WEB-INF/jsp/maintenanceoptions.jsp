@@ -12,7 +12,7 @@ var table = $('#optionTable').DataTable({
   "order": [[ 1, "desc" ]],
   "select": { "style": "single" },
   "rowId": 'code',
-  "ajax": { "url": "/api/maintenanceoptions" },
+  "ajax": { "url": "api/maintenanceoptions" },
   "columns" : [
       {"data": "code"},
       {"data": "description"},
@@ -38,7 +38,7 @@ var modalConfirm = function(callback){
 modalConfirm(function(confirm){
   if(confirm){
     $.ajax({
-      url: '/api/maintenanceoptions/' + $("#code").val(),
+      url: 'api/maintenanceoptions/' + $("#code").val(),
       type: "DELETE",
       success : function(response, textStatus, jqXhr) {
           table.ajax.reload();
@@ -59,7 +59,7 @@ modalConfirm(function(confirm){
 
 $("#butCreate").on("click", function(){
   $.ajax({
-    url: '/api/maintenanceoptions',
+    url: 'api/maintenanceoptions',
     type: "PUT",
     data: JSON.stringify(convertFormToJSON($("#moCreateForm"))),
     contentType: "application/json",
@@ -91,7 +91,7 @@ $("#butUpdate").on("click", function() {
   }
   
   $.ajax({
-    url : '/api/maintenanceoptions/' + $("#code").val(),
+    url : 'api/maintenanceoptions/' + $("#code").val(),
     data : JSON.stringify(data),
     contentType : "application/json",
     type : 'PATCH',
@@ -114,7 +114,7 @@ table.on( 'select', function ( e, dt, type, indexes ) {
   
   $.ajax({
     type: "GET",
-    url: "/api/maintenanceoptions/" + rowData[0].code,
+    url: "api/maintenanceoptions/" + rowData[0].code,
     dataType: "json",
     headers : {  "Content-Type" : "application/json" },
     success: function(data) {
