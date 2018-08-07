@@ -104,7 +104,7 @@
           </tbody>
         </table>
         <span class="float-right pt-1">
-          <button type="button" class="btn btn-primary" id="butAddAppoint" data-toggle="modal" data-target="#modalAddAppointment">
+          <button type="button" class="btn btn-primary" id="butAddAppoint" data-toggle="modal" data-target="#modalAddAppointment" disabled>
             Add Appointment
           </button>          
         </span>
@@ -190,8 +190,6 @@
   </div>
 </div>
 
-
-
 <script src="/js/datafunctions.js"></script>
 <script type="text/javascript">
 var map = new Object();
@@ -218,7 +216,7 @@ var historyTable = $('#historyTable').DataTable({
   "searching": false,
   "order": [[ 0, "desc" ]],
   "select": { "style": "single" },
-  "columns" : [ {"data": "maintenanceDate"}, {"data": "workDone"} ]
+  "columns" : [ {"data": "date"}, {"data": "options"} ]
 });
 
 var modalConfirm = function(callback){
@@ -281,6 +279,27 @@ var modalAddAppointment = function(callback){
 
 $("#butCancel").on("click", function() {
   resetForm();
+});
+
+modalAddAppointment(function(confirm){
+  if(confirm) {
+    $.ajax({
+      url: 'api/vehicle/' + $("#oid").val() +'/appointment' ,
+      type: "PUT",
+      data:  JSON.stringify(convertFormToJSON($("#addAppointmentForm"))),
+      contentType: "application/json",
+      success : function(data, textStatus, jqXHR) {
+          $("#alertSuccess").show().delay(2000).fadeOut();
+          historyTable.ajax.url("api/vehicle/" + $("#oid").val() + "/appointment");
+          historyTable.ajax.reload();
+        },
+        error : function(jqXHR, textStatus, errorThrown) {
+          var responseObj = JSON.parse(jqXHR.responseText);
+          $('#alertErrorCreate').html(responseObj.message);
+          $('#alertErrorCreate').show();
+        }          
+    });
+  }
 });
 
 $("#butCreate").on("click", function() {
@@ -355,11 +374,12 @@ $(document).ready(function() {
         $("#odometerReading").val(data["odometerReading"]);
         bindField('odometerReading');
         
-        historyTable.ajax.url("api/vehicle/" + rowData[0].oid + "/maintenance");
+        historyTable.ajax.url("api/vehicle/" + rowData[0].oid + "/appointment");
         historyTable.ajax.reload();
         
         $("#appointmentContainer").load('/mvc/vehicles/' + rowData[0].oid + '/appointment/' + $("#engineType").val());
         
+        $('#butAddAppoint').disable(false);
         $('#butDelete').disable(false);
         $('#butUpdate').disable(true);
       },
@@ -374,6 +394,7 @@ function resetForm() {
   $('form input, form select').each( function(index) { $(this).val(""); } );
   $('#alertError').hide();
   $('#createNewModal').modal('hide');
+  $('#butAddAppoint').disable(true);
   $('#butUpdate').disable(true);
   $('#butDelete').disable(true);
   unbindField('odometerReading');

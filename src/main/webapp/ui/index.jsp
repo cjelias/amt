@@ -35,7 +35,6 @@
 
     <div class="collapse navbar-collapse" id="navbarsAmt">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item" id="menuSchedule" data-page="scheduler"><a class="nav-link" href="#/scheduler">Schedule</a></li>
         <li class="nav-item" id="menuVehicles" data-page="vehicles"><a class="nav-link" href="#/vehicles">Vehicles</a></li>
           
         <li class="nav-item dropdown" id="menuSettings">

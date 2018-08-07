@@ -1,14 +1,22 @@
 package ca.celias.amt.services;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
+import ca.celias.amt.dto.AddAppoinmentDTO;
 import ca.celias.amt.dto.PatchItem;
 import ca.celias.amt.dto.VehicleDTO;
 import ca.celias.amt.dto.VehicleMaintenanceDTO;
+import ca.celias.amt.services.dao.MaintenanceOptionsDAO;
 import ca.celias.amt.services.dao.VehicleDAO;
+import ca.celias.amt.services.entity.MaintenanceOption;
+import ca.celias.amt.services.entity.VehicleMaintenance;
 
 /**
  * 
@@ -17,8 +25,13 @@ import ca.celias.amt.services.dao.VehicleDAO;
 @RequestScoped
 public class VehicleService extends BaseService {
     
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm a");
+    
     @Inject
     private VehicleDAO dao;
+
+    @Inject
+    private MaintenanceOptionsDAO moDao;
 
     /**
      * 
@@ -59,7 +72,47 @@ public class VehicleService extends BaseService {
      * @return
      */
     public VehicleMaintenanceDTO[] getHistory(UUID id) {
-        return new VehicleMaintenanceDTO[0];
+        return nonTransaction(entityManager -> {
+            var vehicle = dao.find(entityManager, id).get();
+            var query = entityManager.createNamedQuery(VehicleMaintenance.FIND_BY_VEHICLE, VehicleMaintenance.class);
+            var results = query.setParameter("vehicle", vehicle).getResultList();
+            
+            var list = new ArrayList<VehicleMaintenanceDTO>(results.size());
+            
+            results.forEach(result -> {
+                var options = result.getMaintenanceOptions().stream().
+                    map(MaintenanceOption::getDescription).
+                    collect(Collectors.joining(", "));
+                
+                var dto = VehicleMaintenanceDTO.emptyBuilder()
+                        .withOid(result.getOid().toString())
+                        .withDate(result.getAppointmentDate().format(FORMATTER))
+                        .withOptions(options).build();
+                
+                list.add(dto);
+            });
+            
+            return list.toArray(new VehicleMaintenanceDTO[results.size()]);
+        });
+    }
+    
+    public void createAppointment(UUID id, AddAppoinmentDTO dto) {
+        transactionNoResult(entityManager -> {
+            var vehicle = dao.find(entityManager, id).get();
+            var dateTime = LocalDateTime.parse(dto.getAppointmentDate(), FORMATTER);
+            
+            var appointment = new VehicleMaintenance();
+            appointment.setAppointmentDate(dateTime);
+            appointment.setVehicle(vehicle);
+            
+            if (dto.getAppointmentOption() != null && dto.getAppointmentOption().length > 0) {
+                for (var option : dto.getAppointmentOption()) {
+                    appointment.getMaintenanceOptions().add(moDao.find(entityManager, option).get());
+                }
+            }
+            
+            entityManager.persist(appointment);
+        });
     }
     
     /**

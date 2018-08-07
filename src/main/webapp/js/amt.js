@@ -5,7 +5,7 @@ jQuery.fn.extend({
     });
   }
 });
-  
+
 var routes = {};
 var container = $(".container-fluid");
 
@@ -14,7 +14,7 @@ function route(id, uri, parent) {
 }
 
 function router() {
-  var uri = location.hash.substring(2) || 'scheduler';
+  var uri = location.hash.substring(2) || 'vehicles';
   var route = routes[uri];
    
   if (route && container) {

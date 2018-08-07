@@ -12,12 +12,28 @@ function unbindField(field) {
 }
 
 function convertFormToJSON(form){
-  var array = jQuery(form).serializeArray();
-  var json = {};
-    
-  jQuery.each(array, function() {
-      json[this.name] = this.value || '';
+  var arrayData, objectData;
+  arrayData = form.serializeArray();
+  objectData = {};
+
+  $.each(arrayData, function() {
+    var value;
+
+    if (this.value != null) {
+      value = this.value;
+    } else {
+      value = '';
+    }
+
+    if (objectData[this.name] != null) {
+      if (!objectData[this.name].push) {
+        objectData[this.name] = [objectData[this.name]];
+      }
+
+      objectData[this.name].push(value);
+    } else {
+      objectData[this.name] = value;
+    }
   });
-    
-  return json;
-}
+
+  return objectData;}
