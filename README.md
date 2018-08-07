@@ -25,7 +25,4 @@ To run the application
     mvn jetty:run -DskipTests
     
 In your browser: http://localhost:8080
-For web services api: http://localhost:8080/api/application.xml
-
-
- 
+For web services api: http://localhost:8080/api/application.xml 
