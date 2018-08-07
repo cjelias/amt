@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ca.celias.amt.mvc.api;
+package ca.celias.amt.ws.rs;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -10,7 +10,7 @@ import javax.ws.rs.Path;
  * 
  * @author Chris Elias
  */
-@Path("/api/scheduler")
+@Path("/scheduler")
 public class SchedulerResource {
 
     @GET

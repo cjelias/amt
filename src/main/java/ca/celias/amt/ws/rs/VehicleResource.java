@@ -1,4 +1,4 @@
-package ca.celias.amt.mvc.api;
+package ca.celias.amt.ws.rs;
 
 import java.util.UUID;
 
@@ -18,10 +18,12 @@ import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.Gson;
 
+import ca.celias.amt.dto.AddAppoinmentDTO;
 import ca.celias.amt.dto.PatchItem;
 import ca.celias.amt.dto.ResponseEntity;
 import ca.celias.amt.dto.ResultDTO;
 import ca.celias.amt.dto.VehicleDTO;
+import ca.celias.amt.dto.VehicleMaintenanceDTO;
 import ca.celias.amt.resources.HasLogger;
 import ca.celias.amt.resources.JsonPatch;
 import ca.celias.amt.services.ResultNotFoundException;
@@ -31,7 +33,7 @@ import ca.celias.amt.services.VehicleService;
  * 
  * @author Chris Elias
  */
-@Path("/api/vehicle")
+@Path("/vehicle")
 public class VehicleResource
 implements HasLogger {
     
@@ -44,21 +46,20 @@ implements HasLogger {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ResultDTO<VehicleDTO> getOptions() {
-        logger().trace("ENTER getOptions()");
+    public ResultDTO<VehicleDTO> getVehicles() {
+        logger().trace("ENTER getVehicles()");
 
         try {
             var resultDTO = new ResultDTO<VehicleDTO>();
             resultDTO.setDraw(0);
-            
             resultDTO.setData(service.findAllDTO());
             
             return resultDTO;
         } finally {
-            logger().trace("EXIT getOptions()");
+            logger().trace("EXIT getVehicles()");
         }
     }
-
+    
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -87,6 +88,41 @@ implements HasLogger {
             logger().trace("EXIT get({})", code);
         }
     }
+
+    @GET
+    @Path("{code}/appointment")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResultDTO<VehicleMaintenanceDTO> getMaintenance(@PathParam("code") String code) {
+        logger().trace("ENTER getMaintenance({})", code);
+
+        try {
+            var resultDTO = new ResultDTO<VehicleMaintenanceDTO>();
+            resultDTO.setDraw(0);
+            
+            resultDTO.setData(service.getHistory(UUID.fromString(code)));
+            
+            return resultDTO;
+        } finally {
+            logger().trace("EXIT getMaintenance({})", code);
+        }
+    }
+
+    @Path("{code}/appointment")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createAppointment(@PathParam("code") String oid, AddAppoinmentDTO dto, @Context UriInfo uriInfo) {
+        logger().trace("ENTER createAppointment({},dto)", oid);
+
+        try {
+            service.createAppointment(UUID.fromString(oid), dto);
+            return Response.status(200).entity(new ResponseEntity("OK")).build();
+        } finally {
+            logger().trace("EXIT createAppointment({},dto)", oid);
+        }
+    }
+    
+    
     
     @PATCH
     @Path("{code}")
@@ -109,6 +145,8 @@ implements HasLogger {
     
     @DELETE
     @Path("{code}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("code") String code) {
         logger().trace("ENTER delete({})", code);
         
@@ -118,6 +156,5 @@ implements HasLogger {
         } finally {
             logger().trace("EXIT delete({})", code);
         }
-    }    
-
+    }   
 }

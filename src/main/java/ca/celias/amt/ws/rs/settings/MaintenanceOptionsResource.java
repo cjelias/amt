@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ca.celias.amt.mvc.api.settings;
+package ca.celias.amt.ws.rs.settings;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -32,7 +32,7 @@ import ca.celias.amt.services.ResultNotFoundException;
  * 
  * @author Chris Elias
  */
-@Path("/api/settings/maintenanceoptions")
+@Path("/settings/maintenanceoptions")
 public class MaintenanceOptionsResource
 implements HasLogger {
     
@@ -114,6 +114,8 @@ implements HasLogger {
     
     @DELETE
     @Path("{code}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("code") String code) {
         logger().trace("ENTER delete(code)");
         

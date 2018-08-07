@@ -1,4 +1,4 @@
-package ca.celias.amt.mvc.api.settings;
+package ca.celias.amt.ws.rs.settings;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -30,7 +30,7 @@ import ca.celias.amt.services.ResultNotFoundException;
  * 
  * @author Chris Elias
  */
-@Path("/api/settings/enginetype")
+@Path("/settings/enginetype")
 public class EngineTypeResources
 implements HasLogger {
 
@@ -139,7 +139,7 @@ implements HasLogger {
     
     @PATCH
     @Path("{code}")
-    @Consumes(MediaType.APPLICATION_JSON )
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response patchObject(@PathParam("code") String code, String patch) {
         logger().trace("ENTER patchObject(patch)");
@@ -158,6 +158,8 @@ implements HasLogger {
     
     @DELETE
     @Path("{code}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("code") String code) {
         logger().trace("ENTER delete(code)");
         
