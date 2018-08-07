@@ -15,13 +15,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "vehicle")
 public class VehicleDTO {
 
-    private final String oid;
-    private final String vin;
-    private final int year;
-    private final String make;
-    private final String model;
-    private final Double odometerReading;
-    private final String engineType;
+    private String oid;
+    private String vin;
+    private int year;
+    private String make;
+    private String model;
+    private Double odometerReading;
+    private String engineType;
     
     public VehicleDTO() {
         this(null, null, 0, null, null, null, null);

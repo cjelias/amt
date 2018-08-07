@@ -11,8 +11,8 @@ import java.util.Objects;
  */
 public class MaintenanceOptionDTO {
 
-    private final String code;
-    private final String description;
+    private String code;
+    private String description;
 
     public MaintenanceOptionDTO() {
         this(null, null);

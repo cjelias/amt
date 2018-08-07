@@ -11,9 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="vehicleMaintenance")
 public class VehicleMaintenanceDTO {
 
-    private final String oid;
-    private final String date;
-    private final String options;
+    private String oid;
+    private String date;
+    private String options;
 
     public VehicleMaintenanceDTO() {
         this(null, null, null);

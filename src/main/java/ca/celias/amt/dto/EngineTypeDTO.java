@@ -16,11 +16,11 @@ public final class EngineTypeDTO {
 
     @NotNull
     @Size(max=15)
-    private final String code;
+    private String code;
     
     @NotNull
     @Size(max=256)
-    private final String description;
+    private String description;
 
     public EngineTypeDTO() {
         this(null, null);
