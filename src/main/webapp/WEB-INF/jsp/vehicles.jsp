@@ -191,7 +191,7 @@ $(document).ready(function() {
         historyTable.ajax.url("api/vehicle/" + rowData[0].oid + "/appointment");
         historyTable.ajax.reload();
         
-        $("#appointmentContainer").load('ui/vehicles?vehicleId=' + rowData[0].oid + '&engineType=' + $("#engineType").val());
+        $("#appointmentContainer").load('ui/vehicles/' + rowData[0].oid + '/addappointment/' + $("#engineType").val());
         
         $('#butAddAppoint').disable(false);
         $('#butDelete').disable(false);
