@@ -4,10 +4,12 @@
 package ca.celias.amt.services.entity;
 
 import java.util.List;
+import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -15,27 +17,63 @@ import javax.persistence.Table;
  * @author Chris Elias
  */
 @Entity
-@Table(name="YEAR_MAKE")
-public class YearMakeModel {
+@Table(name="YEAR_MAKE_MODEL")
+public class YearMakeModel
+implements AmtEntity<UUID> {
 
-    @EmbeddedId
-    private YearMakeId id;
+    @Id
+    @Column(name="OID", insertable=true, updatable=false, nullable=false, columnDefinition=UUID_COL_DEF)
+    private UUID oid;
+    
+    @Column(name="make_year", length=4, nullable=false)
+    private int year;
+    
+    @Column(name="make", length=4, nullable=false)
+    private String make;
     
     @ElementCollection
     private List<String> models;
 
     /**
-     * @return the id
+     * @return the oid
      */
-    public YearMakeId getId() {
-        return id;
+    public UUID getOid() {
+        return oid;
     }
 
     /**
-     * @param id the id to set
+     * @param oid the oid to set
      */
-    public void setId(YearMakeId id) {
-        this.id = id;
+    public void setOid(UUID oid) {
+        this.oid = oid;
+    }
+
+    /**
+     * @return the year
+     */
+    public int getYear() {
+        return year;
+    }
+
+    /**
+     * @param year the year to set
+     */
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    /**
+     * @return the make
+     */
+    public String getMake() {
+        return make;
+    }
+
+    /**
+     * @param make the make to set
+     */
+    public void setMake(String make) {
+        this.make = make;
     }
 
     /**
