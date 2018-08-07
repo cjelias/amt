@@ -100,13 +100,13 @@
           <div class="form-group row">
             <label for="createCode" class="col-sm-3 col-form-label">Code</label>
             <div class="col-sm-7">
-              <input id="createCode" name="code" type="text" size="15" class="form-control">
+              <input id="createCode" name="code" type="text" class="form-control">
             </div>
           </div>
           <div class="form-group row">
             <label for="createDescription" class="col-sm-3 col-form-label">Description</label>
             <div class="col-sm-7">
-              <input id="createDescription" name="description" type="text" size="256" class="form-control">
+              <input id="createDescription" name="description" type="text" class="form-control">
             </div>
           </div>
         </form>  
@@ -214,11 +214,9 @@ $("#butUpdate").on("click", function(){
     data.push({ "op": "replace", "path" : k, "value" : map[k] });
   }
   
-  var patchData = JSON.stringify(data);
-  
   $.ajax({
     url : 'api/settings/enginetype/' + $("#code").val(),
-    data : patchData,
+    data : JSON.stringify(data),
     contentType : "application/json",
     type : 'PATCH',
     success : function(data, textStatus, jqXHR) {
