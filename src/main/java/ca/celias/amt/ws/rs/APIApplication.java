@@ -27,8 +27,8 @@ implements HasLogger {
         
         classes.add(EngineTypeResources.class);
         classes.add(MaintenanceOptionsResource.class);
-        classes.add(SchedulerResource.class);
         classes.add(VehicleResource.class);
+        
         return classes;
     }
 }
