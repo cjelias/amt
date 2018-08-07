@@ -19,10 +19,10 @@ Prerequisites:
 * JDK 10
 
 To build with your own Maven installation:
-    mvn install
+*    mvn install
     
 To run the application
-    mvn jetty:run -DskipTests
+*    mvn jetty:run -DskipTests
     
 In your browser: http://localhost:8080
 For web services api: http://localhost:8080/api/application.xml 
