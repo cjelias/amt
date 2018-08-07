@@ -6,7 +6,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 
 import ca.celias.amt.dto.MaintenanceOptionDTO;
-import ca.celias.amt.dto.PatchItem;
+import ca.celias.amt.dto.PatchDTO;
 import ca.celias.amt.services.ResultNotFoundException;
 import ca.celias.amt.services.entity.EngineType;
 import ca.celias.amt.services.entity.MaintenanceOption;
@@ -42,12 +42,12 @@ public class MaintenanceOptionsDAO extends BaseDAO<MaintenanceOptionDTO,Maintena
     }
 
     @Override
-    public void update(EntityManager entityManager, String code, PatchItem ... patchItems) {
+    public void update(EntityManager entityManager, String code, PatchDTO ... patchDTO) {
         var entity = find(entityManager, code).orElseThrow(() -> new ResultNotFoundException("MaintenanceOption: " + code));
         
-        for (var patchItem : patchItems) {
-            var fieldName = patchItem.getPath();
-            var value = patchItem.getValue() == null ? null : patchItem.getValue().getNameArr()[0];  
+        for (var patch : patchDTO) {
+            var fieldName = patch.getPath();
+            var value = patch.getValue() == null ? null : patch.getValue()[0];  
             
             switch(fieldName) {
             case "description":

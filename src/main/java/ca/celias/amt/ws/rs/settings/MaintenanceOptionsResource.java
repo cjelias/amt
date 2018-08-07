@@ -17,14 +17,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import com.google.gson.Gson;
-
 import ca.celias.amt.dto.MaintenanceOptionDTO;
-import ca.celias.amt.dto.PatchItem;
+import ca.celias.amt.dto.PatchDTO;
 import ca.celias.amt.dto.ResponseEntity;
 import ca.celias.amt.dto.ResultDTO;
 import ca.celias.amt.resources.HasLogger;
-import ca.celias.amt.resources.JsonPatch;
 import ca.celias.amt.services.MaintenanceOptionsService;
 import ca.celias.amt.services.ResultNotFoundException;
 
@@ -39,10 +36,6 @@ implements HasLogger {
     @Inject
     private MaintenanceOptionsService service;
  
-    @Inject
-    @JsonPatch
-    private Gson gson;
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ResultDTO<MaintenanceOptionDTO> getOptions() {
@@ -97,18 +90,14 @@ implements HasLogger {
     @Path("{code}")
     @Consumes(MediaType.APPLICATION_JSON )
     @Produces(MediaType.APPLICATION_JSON)
-    public Response patchObject(@PathParam("code") String code, String patch) {
-        logger().trace("ENTER patchObject(patch)");
-        
-        logger().debug("Patch String: {}", patch);
-
-        final PatchItem[] patchItems = gson.fromJson(patch, PatchItem[].class);
+    public Response patchObject(@PathParam("code") String code, PatchDTO[] patch) {
+        logger().trace("ENTER patchObject({}, patch)", code);
         
         try {
-            service.update(code, patchItems);
+            service.update(code, patch);
             return Response.status(200).entity(new ResponseEntity("OK")).build();
         } finally {
-            logger().trace("EXIT patchObject(patch)");
+            logger().trace("EXIT patchObject({}, patch)", code);
         }
     }
     

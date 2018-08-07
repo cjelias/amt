@@ -10,7 +10,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import ca.celias.amt.dto.AddAppoinmentDTO;
-import ca.celias.amt.dto.PatchItem;
+import ca.celias.amt.dto.PatchDTO;
 import ca.celias.amt.dto.VehicleDTO;
 import ca.celias.amt.dto.VehicleMaintenanceDTO;
 import ca.celias.amt.services.dao.MaintenanceOptionsDAO;
@@ -120,8 +120,8 @@ public class VehicleService extends BaseService {
      * @param id
      * @param patchItems
      */
-    public void update(UUID id, PatchItem[] patchItems) {
-        transactionNoResult(entityManager -> dao.update(entityManager, id, patchItems));
+    public void update(UUID id, PatchDTO[] patchDTO) {
+        transactionNoResult(entityManager -> dao.update(entityManager, id, patchDTO));
     }
     
     /**

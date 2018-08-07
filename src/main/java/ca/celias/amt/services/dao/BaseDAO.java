@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
-import ca.celias.amt.dto.PatchItem;
+import ca.celias.amt.dto.PatchDTO;
 import ca.celias.amt.resources.HasLogger;
 import ca.celias.amt.services.ResultNotFoundException;
 import ca.celias.amt.services.entity.AmtEntity;
@@ -73,10 +73,10 @@ implements HasLogger {
      * 
      * @param entityManager
      * @param id
-     * @param patchItems
+     * @param patchDTO
      * @throws ResultNotFoundException
      */
-    public abstract void update(EntityManager entityManager, IDTYPE id, PatchItem ... patchItems);
+    public abstract void update(EntityManager entityManager, IDTYPE id, PatchDTO ... patchDTO);
     
     /**
      * 

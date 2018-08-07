@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import ca.celias.amt.dto.EngineTypeDTO;
 import ca.celias.amt.dto.PatchItem;
-import ca.celias.amt.dto.PatchValue;
+import ca.celias.amt.dto.PatchDTO;
 import ca.celias.amt.services.BaseService;
 import ca.celias.amt.services.dao.EngineTypeDAO;
 import ca.celias.amt.services.jpa.EntityManagerFactoryProducer;
@@ -63,7 +63,7 @@ public class EngineTypeCRUDTest extends BaseService {
             assertNotNull(readDTO, () -> "dto");
             assertEquals(testCode, readDTO.getCode(), () -> "read dto.code" );
             
-            var patchItem = new PatchItem("replace", "description", new PatchValue(updateDescription));
+            var patchItem = new PatchItem("replace", "description", new PatchDTO(updateDescription));
             
             dao.update(entityManager, code, patchItem);
             

@@ -6,7 +6,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
-import ca.celias.amt.dto.PatchItem;
+import ca.celias.amt.dto.PatchDTO;
 import ca.celias.amt.dto.VehicleDTO;
 import ca.celias.amt.resources.HasLogger;
 import ca.celias.amt.services.InvalidEngineTypeFoundException;
@@ -71,12 +71,12 @@ implements HasLogger {
     }
 
     @Override
-    public void update(EntityManager entityManager, UUID id, PatchItem ... patchItems) {
+    public void update(EntityManager entityManager, UUID id, PatchDTO ... patchDTO) {
         var entity = find(entityManager, id).orElseThrow(() -> new ResultNotFoundException("Vehicle Id: " + id.toString()));
         
-        for (var patchItem : patchItems) {
+        for (var patchItem : patchDTO) {
             var fieldName = patchItem.getPath();
-            var value = patchItem.getValue() == null ? null : patchItem.getValue().getNameArr()[0];  
+            var value = patchItem.getValue() == null ? null : patchItem.getValue()[0];  
             
             switch(fieldName) {
             case "odometerReading":

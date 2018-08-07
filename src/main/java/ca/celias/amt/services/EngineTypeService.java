@@ -5,7 +5,7 @@ import javax.inject.Inject;
 
 import ca.celias.amt.dto.EngineTypeDTO;
 import ca.celias.amt.dto.MaintenanceOptionDTO;
-import ca.celias.amt.dto.PatchItem;
+import ca.celias.amt.dto.PatchDTO;
 import ca.celias.amt.services.dao.EngineTypeDAO;
 import ca.celias.amt.services.dao.MaintenanceOptionsDAO;
 
@@ -60,8 +60,8 @@ public class EngineTypeService extends BaseService {
      * @param code
      * @param patchItems
      */
-    public void update(String code, PatchItem[] patchItems) {
-        transactionNoResult(entityManager -> dao.update(entityManager, code, patchItems));
+    public void update(String code, PatchDTO[] patchDTO) {
+        transactionNoResult(entityManager -> dao.update(entityManager, code, patchDTO));
     }
     
     /**

@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 
 import ca.celias.amt.dto.EngineTypeDTO;
 import ca.celias.amt.dto.PatchItem;
-import ca.celias.amt.dto.PatchValue;
+import ca.celias.amt.dto.PatchDTO;
 import ca.celias.amt.dto.VehicleDTO;
 import ca.celias.amt.services.BaseService;
 import ca.celias.amt.services.InvalidEngineTypeFoundException;
@@ -82,7 +82,7 @@ public class VehicleCRUDTest extends BaseService {
             assertNotNull(readDTO, () -> "dto");
             assertEquals(uuid.toString(), readDTO.getOid(), () -> "read dto.oid" );
             
-            var patchItem = new PatchItem("replace", "odometerReading", new PatchValue(Double.toString(newOdReading)));
+            var patchItem = new PatchItem("replace", "odometerReading", new PatchDTO(Double.toString(newOdReading)));
             
             dao.update(entityManager, uuid, patchItem);
             
