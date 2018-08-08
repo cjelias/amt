@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>ca.celias</groupId>
     <artifactId>amt</artifactId>
@@ -34,12 +36,12 @@
 
         <version.slf4j>1.7.25</version.slf4j>
         <version.logback>1.2.3</version.logback>
-        
+
         <junit.version>5.2.0</junit.version>
         <junit.platform.version>1.2.0</junit.platform.version>
         <weld.junit.version>1.3.0.Final</weld.junit.version>
     </properties>
- 
+
     <repositories>
         <repository>
             <id>sonatype-oss-snapshots</id>
@@ -52,7 +54,7 @@
             </snapshots>
         </repository>
     </repositories>
- 
+
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -79,31 +81,18 @@
             <scope>provided</scope>
         </dependency>
         
-<!-- MVC + Ozark for RESTEasy-->
-<dependency>
-    <groupId>javax.mvc</groupId>
-    <artifactId>javax.mvc-api</artifactId>
-    <version>${verion.mvc-api}</version>
-</dependency>
-<dependency>
-    <groupId>org.mvc-spec.ozark</groupId>
-    <artifactId>ozark-resteasy</artifactId>
-    <version>${version.ozark}</version>
-</dependency>        
+        <!-- Comment out if using Jetty -->
+        <dependency>
+            <groupId>org.apache.taglibs</groupId>
+            <artifactId>taglibs-standard-impl</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.taglibs</groupId>
+            <artifactId>taglibs-standard-spec</artifactId>
+            <version>1.2.5</version>
+        </dependency>
 
-<!--         
-<dependency>
-    <groupId>org.apache.taglibs</groupId>
-    <artifactId>taglibs-standard-impl</artifactId>
-    <version>1.2.5</version>
-</dependency>
-
-<dependency>
-    <groupId>org.apache.taglibs</groupId>
-    <artifactId>taglibs-standard-spec</artifactId>
-    <version>1.2.5</version>
-</dependency>
- -->        
         <!-- CDI -->
         <dependency>
             <groupId>javax.enterprise</groupId>
@@ -116,7 +105,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <!-- Rest Easy/MVC/Ozark -->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
@@ -155,7 +144,7 @@
                     <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
@@ -188,7 +177,6 @@
             <artifactId>resteasy-jackson2-provider</artifactId>
             <version>${version.resteasy}</version>
         </dependency>
-        
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-servlet-initializer</artifactId>
@@ -205,17 +193,15 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${version.guava}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.code.findbugs</groupId>
-                    <artifactId>jsr305</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>javax.mvc</groupId>
+            <artifactId>javax.mvc-api</artifactId>
+            <version>${verion.mvc-api}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mvc-spec.ozark</groupId>
+            <artifactId>ozark-resteasy</artifactId>
+            <version>${version.ozark}</version>
         </dependency>
 
         <!-- SLF4j/Logback -->
@@ -241,8 +227,8 @@
             <artifactId>derby</artifactId>
             <version>${version.derby}</version>
         </dependency>
-        
-        <!-- Weld  -->
+
+        <!-- Weld -->
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
             <artifactId>weld-servlet-core</artifactId>
@@ -257,7 +243,7 @@
                     <artifactId>jboss-interceptors-api_1.2_spec</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>   
+        </dependency>
         <dependency>
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>
@@ -276,12 +262,11 @@
             <artifactId>jaxb-impl</artifactId>
             <version>${version.jaxb-impl}</version>
         </dependency>
-
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-core</artifactId>
             <version>${version.jaxb-impl}</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
@@ -296,6 +281,18 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${version.jackson}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${version.guava}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Hibernate ORM/Validation-api -->
@@ -324,26 +321,25 @@
             <artifactId>javassist</artifactId>
             <version>${version.javassist}</version>
         </dependency>
-        
+
         <!-- JUnit 5 Dependencies -->
         <dependency>
-          <groupId>org.jboss.weld</groupId>
-          <artifactId>weld-junit5</artifactId>
-          <version>${weld.junit.version}</version>
-          <exclusions>
-              <exclusion>
-                  <groupId>org.hibernate.javax.persistence</groupId>
-                  <artifactId>hibernate-jpa-2.1-api</artifactId>
-              </exclusion>
-              <exclusion>
-                  <groupId>org.jboss.spec.javax.annotation</groupId>
-                  <artifactId>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-junit5</artifactId>
+            <version>${weld.junit.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate.javax.persistence</groupId>
+                    <artifactId>hibernate-jpa-2.1-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.spec.javax.annotation</groupId>
+                    <artifactId>
                       jboss-annotations-api_1.2_spec
                   </artifactId>
-              </exclusion>
-          </exclusions>
-        </dependency>        
-        
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -382,7 +378,8 @@
                 </configuration>
             </plugin>
 
-            <!-- The Jetty plugin allows us to easily test the development build by running jetty:run on the command line. -->
+            <!-- The Jetty plugin allows us to easily test the development 
+                build by running jetty:run on the command line. -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -391,12 +388,12 @@
                     <scanIntervalSeconds>2</scanIntervalSeconds>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${version.surefire.plugin}</version>
-                
+
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
